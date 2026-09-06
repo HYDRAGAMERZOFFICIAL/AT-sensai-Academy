@@ -5,6 +5,7 @@ import { Header } from './components/layout/Header';
 import { MobileDrawer } from './components/layout/MobileDrawer';
 import { Footer } from './components/layout/Footer';
 import { ScrollToTop } from './components/common/ScrollToTop';
+import { FloatingWhatsApp } from './components/common/FloatingWhatsApp';
 
 // Dedicated Modular Pages
 import { HomePage } from './pages/HomePage';
@@ -52,6 +53,9 @@ export function App() {
         </main>
 
         <Footer />
+
+        {/* Global Floating Actions */}
+        <FloatingWhatsApp />
 
         {/* Global Modals for Quick Actions */}
         <CurriculumModal />

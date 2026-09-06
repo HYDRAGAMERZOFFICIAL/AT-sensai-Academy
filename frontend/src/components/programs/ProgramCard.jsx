@@ -1,82 +1,73 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { formatFeeDisplay } from '../../utils/formatters';
 
 export function ProgramCard({ program, onEnrollClick }) {
-  const isFeatured = program.featured ? 'featured' : '';
-  const badgeCategory = program.category === 'school' ? 'badge-gold' : 'badge-blue';
-  const categoryName = program.category === 'school' ? 'School Foundation' : 'Competitive Track';
+  const subjects = typeof program.subjectsJson === 'string'
+    ? (() => { try { return JSON.parse(program.subjectsJson); } catch (e) { return []; } })()
+    : (program.subjectsJson || []);
 
-  let subjects = [];
-  try {
-    subjects = typeof program.subjectsJson === 'string' ? JSON.parse(program.subjectsJson) : program.subjects || [];
-  } catch (e) {
-    subjects = [];
-  }
+  const exams = typeof program.examsJson === 'string'
+    ? (() => { try { return JSON.parse(program.examsJson); } catch (e) { return []; } })()
+    : (program.examsJson || []);
 
-  let exams = [];
-  try {
-    exams = typeof program.examsJson === 'string' ? JSON.parse(program.examsJson) : program.examsCovered || [];
-  } catch (e) {
-    exams = [];
-  }
+  const isCombo = program.code === 'ssc-banking-combo';
 
   return (
-    <article className={`program-card ${isFeatured}`} id={`card-${program.code}`}>
-      {program.featured && <div className="program-card-ribbon">{program.tag || 'Popular'}</div>}
+    <article className={`program-card ${isCombo ? 'featured-card' : ''}`}>
+      {isCombo && (
+        <div className="program-card-badge">
+          ★ Maximum Value Pathway
+        </div>
+      )}
 
       <div className="program-card-header">
-        <div className="program-card-top-tags">
-          <span className={`badge ${badgeCategory}`}>{categoryName}</span>
-          <span className="badge badge-navy">Batch 2026/27</span>
-        </div>
-
-        <div className="program-meta-line">
-          <span className="edtech-rating">★ 4.9</span>
-          <span>•</span>
-          <span>{program.validity} Validity</span>
-          <span>•</span>
-          <span>Offline + Hybrid</span>
-        </div>
-
-        <h3 className="program-card-title">
-          <Link to={`/programs/${program.code}`}>
-            {program.title}
-          </Link>
-        </h3>
-        <p className="program-card-desc">
-          {program.description}
-        </p>
+        <span className="badge badge-navy">{program.category === 'school' ? 'School Foundation' : 'Competitive Exam'}</span>
+        {program.tag && (
+          <span className="badge badge-accent">{program.tag}</span>
+        )}
       </div>
 
-      <div className="program-details-box">
-        <div className="detail-item">
-          <span className="detail-label">Schedule & Timings</span>
-          <span className="detail-val">{program.timings}</span>
+      <h3 className="program-card-title">
+        <Link to={`/programs/${program.code}`}>{program.title}</Link>
+      </h3>
+
+      <p className="program-card-desc">{program.description}</p>
+
+      <div className="program-meta-list">
+        <div className="program-meta-item">
+          <span className="meta-icon">⏳</span>
+          <div>
+            <strong>Course Validity:</strong> {program.validity}
+          </div>
         </div>
-        <div className="detail-item">
-          <span className="detail-label">Batch Options</span>
-          <span className="detail-val">{program.batches}</span>
+        <div className="program-meta-item">
+          <span className="meta-icon">📅</span>
+          <div>
+            <strong>Timings:</strong> {program.timings}
+          </div>
+        </div>
+        <div className="program-meta-item">
+          <span className="meta-icon">🎯</span>
+          <div>
+            <strong>Eligibility:</strong> {program.eligibility}
+          </div>
         </div>
       </div>
 
       {exams.length > 0 && (
-        <div style={{ marginBottom: 'var(--space-3)' }}>
-          <div className="program-section-label">Target Exams</div>
-          <div className="subject-tags">
-            {exams.slice(0, 3).map((ex, idx) => (
-              <span key={idx} className="subject-tag highlight">
-                {ex}
-              </span>
+        <div className="program-section-preview">
+          <div className="program-section-label">Target Recruitments & Boards</div>
+          <div className="exam-target-chips">
+            {exams.map((exam, idx) => (
+              <span key={idx} className="exam-chip">{exam}</span>
             ))}
-            {exams.length > 3 && (
-              <span className="subject-tag">+{exams.length - 3} more</span>
-            )}
           </div>
         </div>
       )}
 
       {subjects.length > 0 && (
-        <div style={{ marginBottom: 'var(--space-4)' }}>
+        <div className="program-section-preview">
           <div className="program-section-label">Core Subjects</div>
           <div className="subject-tags">
             {subjects.slice(0, 4).map((s, idx) => (
@@ -91,7 +82,7 @@ export function ProgramCard({ program, onEnrollClick }) {
 
       <div className="program-pricing-box">
         <div>
-          <div className="pricing-amount">{program.feeDisplay}</div>
+          <div className="pricing-amount">{formatFeeDisplay(program.feeDisplay)}</div>
           <div className="pricing-subtext">{program.feeSubtext || 'Inclusive of GST'}</div>
         </div>
         <span className="badge badge-emerald">Verified Fee</span>

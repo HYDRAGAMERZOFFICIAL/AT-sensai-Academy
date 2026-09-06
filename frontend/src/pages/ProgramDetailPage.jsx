@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ProgramService } from '../api/programService';
+import { formatFeeDisplay } from '../utils/formatters';
 
 export function ProgramDetailPage() {
   const { code } = useParams();
@@ -117,10 +118,10 @@ export function ProgramDetailPage() {
                 Verified Catalog Fee
               </div>
               <div style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--color-primary-navy)', marginBottom: '4px' }}>
-                {program.feeDisplay}
+                {formatFeeDisplay(program.feeDisplay)}
               </div>
               <div style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', marginBottom: 'var(--space-6)' }}>
-                {program.feeSubtext} (Transparent pricing with zero hidden fees)
+                {program.feeSubtext || 'Inclusive of GST'} (Transparent pricing with zero hidden fees)
               </div>
 
               <div style={{ borderTop: '1px solid var(--color-border-subtle)', borderBottom: '1px solid var(--color-border-subtle)', padding: 'var(--space-4) 0', marginBottom: 'var(--space-6)', display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
