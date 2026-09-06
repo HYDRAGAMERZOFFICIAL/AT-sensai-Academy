@@ -1,14 +1,18 @@
-import { request } from './apiClient';
+import { INITIAL_PROGRAMS } from '../data/coursesData';
 
 export const ProgramService = {
   async getAllPrograms(category = '') {
-    const query = category ? `?category=${encodeURIComponent(category)}` : '';
-    const res = await request(`/programs${query}`);
-    return res.data;
+    if (!category) {
+      return INITIAL_PROGRAMS;
+    }
+    return INITIAL_PROGRAMS.filter(p => p.category === category);
   },
 
   async getProgramByCode(code) {
-    const res = await request(`/programs/${code}`);
-    return res.data;
+    const program = INITIAL_PROGRAMS.find(p => p.code.toLowerCase() === (code || '').toLowerCase());
+    if (!program) {
+      throw new Error(`Program not found with code: ${code}`);
+    }
+    return program;
   }
 };

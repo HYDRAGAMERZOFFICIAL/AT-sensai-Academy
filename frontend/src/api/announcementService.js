@@ -1,13 +1,7 @@
-import { request } from './apiClient';
+import { INITIAL_ANNOUNCEMENTS } from '../data/staticData';
 
 export const AnnouncementService = {
   async getActiveAnnouncements() {
-    try {
-      const res = await request('/announcements');
-      return res.data || [];
-    } catch (err) {
-      console.warn("Using fallback announcement items:", err);
-      return [];
-    }
+    return INITIAL_ANNOUNCEMENTS.filter(a => a.active);
   }
 };

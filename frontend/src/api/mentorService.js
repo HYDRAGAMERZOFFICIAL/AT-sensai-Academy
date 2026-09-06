@@ -1,8 +1,7 @@
-import { request } from './apiClient';
+import { INITIAL_MENTORS } from '../data/staticData';
 
 export const MentorService = {
   async getAllMentors() {
-    const res = await request('/mentors');
-    return res.data;
+    return INITIAL_MENTORS.filter(m => m.active);
   }
 };

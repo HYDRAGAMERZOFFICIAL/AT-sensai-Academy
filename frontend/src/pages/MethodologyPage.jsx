@@ -1,8 +1,11 @@
 import React from 'react';
 import { MethodologySection } from '../components/methodology/MethodologySection';
 import { Link } from 'react-router-dom';
+import { useModal } from '../context/ModalContext';
 
 export function MethodologyPage() {
+  const { openWorkshopModal } = useModal();
+
   return (
     <div className="page-methodology" style={{ paddingTop: 'var(--space-10)', paddingBottom: 'var(--space-16)' }}>
       <div className="container" style={{ marginBottom: 'var(--space-6)', textAlign: 'center' }}>
@@ -22,8 +25,12 @@ export function MethodologyPage() {
             Join our 100% Free Career & Competitive Awareness Workshop to see how we break down complex reasoning, aptitude, and general studies.
           </p>
           <div style={{ display: 'flex', gap: 'var(--space-4)', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link to="/workshop" className="btn btn-gold btn-lg">Book Free Workshop</Link>
-            <Link to="/admissions" className="btn btn-primary btn-lg">Apply for Admission</Link>
+            <button type="button" onClick={() => openWorkshopModal()} className="btn btn-gold btn-lg">
+              Book Free Workshop
+            </button>
+            <Link to="/admissions" className="btn btn-primary btn-lg">
+              Apply for Admission
+            </Link>
           </div>
         </div>
       </div>

@@ -52,9 +52,8 @@ export function App() {
             <Route path="/faq" element={<FAQPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/policies" element={<PoliciesPage />} />
-            {/* <Route path="/admin-portal" element={<AdminPortalPage />} />
-            <Route path="/admin" element={<AdminPortalPage />} /> */}
-            <Route path="/sensei-admin" element={<AdminPortalPage />} />
+            {/* Admin and Backend Temporarily Disabled in Standalone Frontend Mode */}
+            <Route path="/sensei-admin" element={<AccessDeniedPage />} />
             <Route path="/403" element={<AccessDeniedPage />} />
             <Route path="/access-denied" element={<AccessDeniedPage />} />
             <Route path="/restricted" element={<AccessDeniedPage />} />
