@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState, useCallback } from 'react';
 const ModalContext = createContext(null);
 
 export function ModalProvider({ children }) {
-  const [activeModal, setActiveModal] = useState(null); // 'curriculum' | 'policy' | 'workshop' | null
+  const [activeModal, setActiveModal] = useState(null); // 'curriculum' | 'policy' | 'workshop' | 'enquiry' | null
   const [modalData, setModalData] = useState(null);
 
   const openCurriculumModal = useCallback((program) => {
@@ -24,6 +24,12 @@ export function ModalProvider({ children }) {
     document.body.style.overflow = 'hidden';
   }, []);
 
+  const openEnquiryModal = useCallback((data = {}) => {
+    setModalData(data);
+    setActiveModal('enquiry');
+    document.body.style.overflow = 'hidden';
+  }, []);
+
   const closeModal = useCallback(() => {
     setActiveModal(null);
     setModalData(null);
@@ -37,6 +43,7 @@ export function ModalProvider({ children }) {
       openCurriculumModal,
       openPolicyModal,
       openWorkshopModal,
+      openEnquiryModal,
       closeModal
     }}>
       {children}

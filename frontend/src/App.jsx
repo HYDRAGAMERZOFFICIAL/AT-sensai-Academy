@@ -27,6 +27,7 @@ import { WorkshopPage } from './pages/WorkshopPage';
 import { PolicyModal } from './components/policies/PolicyModal';
 import { CurriculumModal } from './components/programs/CurriculumModal';
 import { WorkshopModal } from './components/workshop/WorkshopModal';
+import { EnquiryModal } from './components/enquiry/EnquiryModal';
 
 export function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -69,6 +70,7 @@ export function App() {
         {/* Global Modals for Quick Actions */}
         <CurriculumModal />
         <WorkshopModal />
+        <EnquiryModal />
         <PolicyModal />
       </div>
     </BrowserRouter>

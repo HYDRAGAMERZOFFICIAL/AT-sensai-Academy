@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useModal } from '../../context/ModalContext';
 
 export function MobileDrawer({ isOpen, onClose }) {
-  const { openWorkshopModal } = useModal();
+  const { openWorkshopModal, openEnquiryModal } = useModal();
   const [programsExpanded, setProgramsExpanded] = useState(false);
   const [aboutExpanded, setAboutExpanded] = useState(false);
 
@@ -87,9 +87,16 @@ export function MobileDrawer({ isOpen, onClose }) {
           >
             Book Free Workshop Seat
           </button>
-          <Link to="/admissions" onClick={onClose} className="btn btn-primary btn-block">
+          <button
+            type="button"
+            className="btn btn-primary btn-block"
+            onClick={() => {
+              onClose();
+              openEnquiryModal();
+            }}
+          >
             Direct Admission Enquiry
-          </Link>
+          </button>
         </div>
       </aside>
     </>

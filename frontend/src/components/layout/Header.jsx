@@ -6,7 +6,7 @@ export function Header({ onOpenMobileMenu }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [programsDropdownOpen, setProgramsDropdownOpen] = useState(false);
   const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
-  const { openWorkshopModal } = useModal();
+  const { openWorkshopModal, openEnquiryModal } = useModal();
   const navigate = useNavigate();
 
   const programsRef = useRef(null);
@@ -157,9 +157,13 @@ export function Header({ onOpenMobileMenu }) {
           >
             Free Workshop
           </button>
-          <Link to="/admissions" className="btn btn-primary btn-sm header-cta-desktop">
+          <button
+            type="button"
+            className="btn btn-primary btn-sm header-cta-desktop"
+            onClick={() => openEnquiryModal()}
+          >
             Enquire Now
-          </Link>
+          </button>
           <button
             type="button"
             className="mobile-nav-toggle"
