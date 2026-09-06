@@ -16,6 +16,12 @@ export const AdminService = {
     return res.data || [];
   },
 
+  // Workshop Bookings
+  async getWorkshopBookings() {
+    const res = await request('/workshops/bookings');
+    return res.data || [];
+  },
+
   async updateEnquiryStatus(id, status, notes) {
     const res = await request(`/enquiries/${id}/status`, {
       method: 'PATCH',

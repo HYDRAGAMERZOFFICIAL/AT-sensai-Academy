@@ -14,7 +14,7 @@ export function AdminPortalPage() {
   const [authError, setAuthError] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
 
-  // Active Tab: 'enquiries' | 'announcements' | 'fees' | 'system'
+  // Active Tab: 'enquiries' | 'workshops' | 'announcements' | 'fees' | 'system'
   const [activeTab, setActiveTab] = useState('enquiries');
 
   // Enquiries state
@@ -25,6 +25,11 @@ export function AdminPortalPage() {
   const [courseFilter, setCourseFilter] = useState('ALL');
   const [selectedEnquiryForNotes, setSelectedEnquiryForNotes] = useState(null);
   const [notesDraft, setNotesDraft] = useState('');
+
+  // Workshop Bookings state
+  const [workshops, setWorkshops] = useState([]);
+  const [workshopsLoading, setWorkshopsLoading] = useState(false);
+  const [workshopSearch, setWorkshopSearch] = useState('');
 
   // Announcements state
   const [announcements, setAnnouncements] = useState([]);
@@ -85,6 +90,8 @@ export function AdminPortalPage() {
 
     if (activeTab === 'enquiries') {
       loadEnquiries();
+    } else if (activeTab === 'workshops') {
+      loadWorkshops();
     } else if (activeTab === 'announcements') {
       loadAnnouncements();
     } else if (activeTab === 'fees') {
@@ -101,6 +108,18 @@ export function AdminPortalPage() {
       showError('Failed to load enquiries: ' + err.message);
     } finally {
       setEnquiriesLoading(false);
+    }
+  };
+
+  const loadWorkshops = async () => {
+    try {
+      setWorkshopsLoading(true);
+      const data = await AdminService.getWorkshopBookings();
+      setWorkshops(data || []);
+    } catch (err) {
+      showError('Failed to load workshop bookings: ' + err.message);
+    } finally {
+      setWorkshopsLoading(false);
     }
   };
 
@@ -152,12 +171,32 @@ export function AdminPortalPage() {
     }
   };
 
-  // WhatsApp 1-Click Message Generator
+  // Delete Enquiry
+  const handleDeleteEnquiry = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this enquiry record?')) return;
+    try {
+      await AdminService.deleteEnquiry(id);
+      showSuccess('Enquiry deleted successfully');
+      setEnquiries(prev => prev.filter(e => e.id !== id));
+    } catch (err) {
+      showError('Failed to delete enquiry: ' + err.message);
+    }
+  };
+
+  // WhatsApp 1-Click Message Generator for Enquiries
   const getWhatsAppLink = (enquiry) => {
-    const rawPhone = enquiry.phone.replace(/\D/g, '');
+    const rawPhone = (enquiry.phone || '').replace(/\D/g, '');
     const phone = rawPhone.startsWith('91') ? rawPhone : `91${rawPhone}`;
-    const courseTitle = enquiry.courseCode ? enquiry.courseCode.toUpperCase() : 'Coaching';
-    const text = `Hi ${enquiry.studentName}! 👋 Thank you for enquiring about the *${courseTitle}* at *AT Sensei Academy*, Bangalore. We would love to assist you with batch schedules, syllabus blueprint, and upcoming demo sessions. When would be a good time to connect?`;
+    const courseTitle = enquiry.courseCode ? enquiry.courseCode.toUpperCase() : 'Coaching Track';
+    const text = `Hi ${enquiry.studentName || 'there'}! 👋 Thank you for enquiring about the *${courseTitle}* at *AT Sensei Academy*, Bangalore. We would love to assist you with batch schedules, syllabus blueprint, and upcoming demo sessions. When would be a good time to connect?`;
+    return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+  };
+
+  // WhatsApp 1-Click Message Generator for Workshop Bookings
+  const getWorkshopWhatsAppLink = (wk) => {
+    const rawPhone = (wk.phone || '').replace(/\D/g, '');
+    const phone = rawPhone.startsWith('91') ? rawPhone : `91${rawPhone}`;
+    const text = `Hi ${wk.attendeeName || 'there'}! 👋 Thank you for registering for the *100% Free Career Awareness & Strategy Workshop* at *AT Sensei Academy*, Bangalore. We have confirmed your pass! Would you like us to share the session timetable and preparation guide on WhatsApp?`;
     return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
   };
 
@@ -193,6 +232,19 @@ export function AdminPortalPage() {
       setAnnouncements(prev => prev.map(a => a.id === id ? { ...a, active: !a.active } : a));
     } catch (err) {
       showError('Failed to toggle announcement: ' + err.message);
+    }
+  };
+
+  const handleUpdateAnnouncement = async (e) => {
+    e.preventDefault();
+    if (!editingAnnouncement) return;
+    try {
+      await AdminService.updateAnnouncement(editingAnnouncement.id, editingAnnouncement);
+      showSuccess('Announcement updated successfully!');
+      setEditingAnnouncement(null);
+      loadAnnouncements();
+    } catch (err) {
+      showError('Failed to update announcement: ' + err.message);
     }
   };
 
@@ -240,7 +292,18 @@ export function AdminPortalPage() {
     return matchesSearch && matchesStatus && matchesCourse;
   });
 
-  // Export CSV
+  // Filtered workshops
+  const filteredWorkshops = workshops.filter(wk => {
+    const q = workshopSearch.toLowerCase();
+    return (
+      (wk.attendeeName && wk.attendeeName.toLowerCase().includes(q)) ||
+      (wk.phone && wk.phone.includes(q)) ||
+      (wk.institutionName && wk.institutionName.toLowerCase().includes(q)) ||
+      (wk.bookingType && wk.bookingType.toLowerCase().includes(q))
+    );
+  });
+
+  // Export Enquiries CSV
   const exportToCSV = () => {
     if (filteredEnquiries.length === 0) {
       showError('No enquiries to export');
@@ -273,6 +336,34 @@ export function AdminPortalPage() {
     showSuccess('Exported enquiries to CSV successfully');
   };
 
+  // Export Workshops CSV
+  const exportWorkshopsCSV = () => {
+    if (filteredWorkshops.length === 0) {
+      showError('No workshop bookings to export');
+      return;
+    }
+    const headers = ['ID', 'Date', 'Attendee Name', 'Phone', 'Booking Type', 'Institution Name', 'Expected Count'];
+    const rows = filteredWorkshops.map(w => [
+      w.id,
+      w.createdAt ? new Date(w.createdAt).toLocaleString() : '',
+      `"${w.attendeeName || ''}"`,
+      `"${w.phone || ''}"`,
+      `"${w.bookingType || 'student'}"`,
+      `"${w.institutionName || ''}"`,
+      `"${w.expectedAttendees || 1}"`
+    ]);
+
+    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `AT_Sensei_Workshops_${new Date().toISOString().slice(0,10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    showSuccess('Exported workshop bookings to CSV successfully');
+  };
+
   // 1. Password Protected Login Gate Screen
   if (!isAuthenticated) {
     return (
@@ -286,7 +377,7 @@ export function AdminPortalPage() {
                 className="admin-login-logo"
               />
               <h2>Academy Staff Portal</h2>
-              <p>Enter your administrator security passkey to manage admissions, enquiries, fees, and announcements.</p>
+              <p>Enter your administrator security passkey to manage admissions, enquiries, workshops, fees, and live announcements.</p>
             </div>
 
             {authError && (
@@ -371,6 +462,13 @@ export function AdminPortalPage() {
             onClick={() => setActiveTab('enquiries')}
           >
             📋 Student Enquiries ({enquiries.length})
+          </button>
+          <button
+            type="button"
+            className={`admin-tab-btn ${activeTab === 'workshops' ? 'active' : ''}`}
+            onClick={() => setActiveTab('workshops')}
+          >
+            🎓 Workshop Registrations ({workshops.length})
           </button>
           <button
             type="button"
@@ -541,7 +639,7 @@ export function AdminPortalPage() {
                               💬 WhatsApp
                             </a>
                             <a
-                              href={`tel:+91${enq.phone.replace(/\D/g, '')}`}
+                              href={`tel:+91${(enq.phone || '').replace(/\D/g, '')}`}
                               className="btn-action-call"
                               title="Direct Phone Call"
                             >
@@ -555,7 +653,7 @@ export function AdminPortalPage() {
                               <span className="guardian-badge">🛡️ Parent Consent</span>
                               <div className="guardian-name">{enq.guardianConsent.parentName}</div>
                               <div className="guardian-phone">
-                                <a href={`tel:+91${enq.guardianConsent.parentPhone.replace(/\D/g, '')}`}>
+                                <a href={`tel:+91${(enq.guardianConsent.parentPhone || '').replace(/\D/g, '')}`}>
                                   📞 {enq.guardianConsent.parentPhone}
                                 </a>
                               </div>
@@ -590,6 +688,14 @@ export function AdminPortalPage() {
                             >
                               📝 {enq.adminNotes ? 'View Notes' : '+ Add Note'}
                             </button>
+                            <button
+                              type="button"
+                              className="btn-delete-row"
+                              onClick={() => handleDeleteEnquiry(enq.id)}
+                              title="Delete enquiry record"
+                            >
+                              🗑️
+                            </button>
                           </div>
                         </td>
                       </tr>
@@ -601,7 +707,125 @@ export function AdminPortalPage() {
           </section>
         )}
 
-        {/* TAB 2: ANNOUNCEMENTS & MARQUEE MANAGER */}
+        {/* TAB 2: WORKSHOP REGISTRATIONS */}
+        {activeTab === 'workshops' && (
+          <section className="admin-tab-pane">
+            <div className="admin-toolbar glass-card">
+              <div className="toolbar-search">
+                <input
+                  type="text"
+                  placeholder="🔍 Search attendee name, phone, college/institution..."
+                  value={workshopSearch}
+                  onChange={(e) => setWorkshopSearch(e.target.value)}
+                  className="admin-search-input"
+                />
+              </div>
+
+              <div className="toolbar-filters">
+                <button
+                  type="button"
+                  className="btn btn-outline btn-admin-export"
+                  onClick={exportWorkshopsCSV}
+                  title="Download Workshop CSV report"
+                >
+                  📥 Export CSV
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-primary btn-admin-refresh"
+                  onClick={loadWorkshops}
+                  disabled={workshopsLoading}
+                >
+                  🔄 Refresh
+                </button>
+              </div>
+            </div>
+
+            {workshopsLoading ? (
+              <div className="admin-loading-state glass-card">Loading workshop bookings...</div>
+            ) : filteredWorkshops.length === 0 ? (
+              <div className="admin-empty-state glass-card">
+                <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-2)' }}>🎓</div>
+                <h3>No workshop bookings found</h3>
+                <p>When students or colleges reserve seats for the 100% Free Workshop, they will show here immediately.</p>
+              </div>
+            ) : (
+              <div className="admin-table-container glass-card">
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Ref / Date</th>
+                      <th>Attendee / Contact</th>
+                      <th>Type & Category</th>
+                      <th>Institution / Group Size</th>
+                      <th>Contact Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredWorkshops.map(wk => (
+                      <tr key={wk.id}>
+                        <td>
+                          <div className="enq-ref-badge">#WK-{wk.id}</div>
+                          <div className="enq-date">
+                            {wk.createdAt ? new Date(wk.createdAt).toLocaleDateString('en-IN', {
+                              month: 'short',
+                              day: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            }) : 'Recent'}
+                          </div>
+                        </td>
+                        <td>
+                          <div className="student-primary-name">{wk.attendeeName}</div>
+                          <div className="student-contact-sub">{wk.phone}</div>
+                        </td>
+                        <td>
+                          <span className={`program-tag-pill ${wk.bookingType === 'institution' ? 'program-banking' : 'program-foundation'}`}>
+                            {wk.bookingType === 'institution' ? '🏢 INSTITUTION' : '👤 INDIVIDUAL'}
+                          </span>
+                        </td>
+                        <td>
+                          {wk.institutionName ? (
+                            <div>
+                              <strong>{wk.institutionName}</strong>
+                              <div style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)' }}>
+                                Expected Students: {wk.expectedAttendees || 'N/A'}
+                              </div>
+                            </div>
+                          ) : (
+                            <span style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem' }}>Individual Candidate</span>
+                          )}
+                        </td>
+                        <td>
+                          <div className="contact-actions-cell">
+                            <a
+                              href={getWorkshopWhatsAppLink(wk)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="btn-action-whatsapp"
+                              title="Send 1-Click Workshop WhatsApp Pass"
+                            >
+                              💬 WhatsApp
+                            </a>
+                            <a
+                              href={`tel:+91${(wk.phone || '').replace(/\D/g, '')}`}
+                              className="btn-action-call"
+                              title="Direct Phone Call"
+                            >
+                              📞 Call
+                            </a>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </section>
+        )}
+
+        {/* TAB 3: ANNOUNCEMENTS & MARQUEE MANAGER */}
         {activeTab === 'announcements' && (
           <section className="admin-tab-pane">
             <div className="admin-announcement-grid">
@@ -693,6 +917,14 @@ export function AdminPortalPage() {
                         <div className="announcement-item-actions">
                           <button
                             type="button"
+                            className="btn-action-edit"
+                            onClick={() => setEditingAnnouncement({ ...item })}
+                            title="Edit Announcement Details"
+                          >
+                            ✏️ Edit
+                          </button>
+                          <button
+                            type="button"
                             className="btn-action-toggle"
                             onClick={() => handleToggleAnnouncement(item.id)}
                             title={item.active ? 'Pause from live marquee' : 'Resume on live marquee'}
@@ -717,7 +949,7 @@ export function AdminPortalPage() {
           </section>
         )}
 
-        {/* TAB 3: COURSE FEES & SCHEDULES */}
+        {/* TAB 4: COURSE FEES & SCHEDULES */}
         {activeTab === 'fees' && (
           <section className="admin-tab-pane">
             <div className="admin-header-row">
@@ -742,7 +974,7 @@ export function AdminPortalPage() {
                 {programs.map((prog) => (
                   <div key={prog.id || prog.code} className="admin-prog-card glass-card">
                     <div className="prog-card-top">
-                      <span className="prog-category-badge">{prog.category.toUpperCase()}</span>
+                      <span className="prog-category-badge">{(prog.category || 'Course').toUpperCase()}</span>
                       <span className="prog-validity-badge">⏳ {prog.validity}</span>
                     </div>
 
@@ -768,7 +1000,7 @@ export function AdminPortalPage() {
           </section>
         )}
 
-        {/* TAB 4: SYSTEM & DATABASE HEALTH */}
+        {/* TAB 5: SYSTEM & DATABASE HEALTH */}
         {activeTab === 'system' && (
           <section className="admin-tab-pane">
             <div className="system-health-grid">
@@ -851,6 +1083,86 @@ export function AdminPortalPage() {
                 💾 Save Notes
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Announcement Modal */}
+      {editingAnnouncement && (
+        <div className="admin-modal-overlay" onClick={() => setEditingAnnouncement(null)}>
+          <div className="admin-modal-box glass-card" onClick={(e) => e.stopPropagation()}>
+            <div className="admin-modal-header">
+              <h3>Edit Announcement #{editingAnnouncement.id}</h3>
+              <button
+                type="button"
+                className="admin-modal-close"
+                onClick={() => setEditingAnnouncement(null)}
+              >
+                ✕
+              </button>
+            </div>
+            <form onSubmit={handleUpdateAnnouncement}>
+              <div className="admin-modal-body">
+                <div className="form-group">
+                  <label>Category Label</label>
+                  <input
+                    type="text"
+                    value={editingAnnouncement.category}
+                    onChange={(e) => setEditingAnnouncement({ ...editingAnnouncement, category: e.target.value })}
+                    className="admin-input-field"
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Announcement Text</label>
+                  <textarea
+                    rows={3}
+                    value={editingAnnouncement.text}
+                    onChange={(e) => setEditingAnnouncement({ ...editingAnnouncement, text: e.target.value })}
+                    className="admin-input-field"
+                    required
+                  />
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)' }}>
+                  <div className="form-group">
+                    <label>Icon Emoji</label>
+                    <input
+                      type="text"
+                      value={editingAnnouncement.icon}
+                      onChange={(e) => setEditingAnnouncement({ ...editingAnnouncement, icon: e.target.value })}
+                      className="admin-input-field"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Action Link</label>
+                    <input
+                      type="text"
+                      value={editingAnnouncement.actionLink}
+                      onChange={(e) => setEditingAnnouncement({ ...editingAnnouncement, actionLink: e.target.value })}
+                      className="admin-input-field"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="admin-modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-outline"
+                  onClick={() => setEditingAnnouncement(null)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                >
+                  💾 Save Announcement
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

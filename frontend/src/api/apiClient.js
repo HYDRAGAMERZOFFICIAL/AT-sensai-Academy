@@ -3,7 +3,10 @@
  * Isolated HTTP fetch client with standardized error handling and response unwrapping
  */
 
-const API_BASE_URL = 'http://localhost:8081/api/v1';
+const envUrl = import.meta.env.VITE_API_URL;
+const API_BASE_URL = envUrl 
+  ? `${envUrl.replace(/\/$/, '')}/api/v1`
+  : 'http://localhost:8081/api/v1';
 
 export async function request(endpoint, options = {}) {
   const url = `${API_BASE_URL}${endpoint}`;

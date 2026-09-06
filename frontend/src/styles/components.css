@@ -2802,22 +2802,83 @@
   gap: var(--space-2);
 }
 
-.btn-action-toggle {
-  background: #fff;
-  border: 1px solid var(--color-border);
+.btn-action-edit {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1d4ed8;
   padding: 4px 10px;
   font-size: 0.75rem;
   font-weight: 700;
   border-radius: 9999px;
   cursor: pointer;
+  transition: all var(--transition-fast);
 }
 
-.btn-action-delete {
+.btn-action-edit:hover {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.btn-delete-row {
   background: transparent;
   border: none;
   font-size: 0.95rem;
   cursor: pointer;
   padding: 4px;
+  opacity: 0.6;
+  transition: opacity var(--transition-fast);
+}
+
+.btn-delete-row:hover {
+  opacity: 1;
+}
+
+/* Responsive Table & Admin Controls */
+@media (max-width: 768px) {
+  .admin-topbar-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+
+  .admin-tabs-nav {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: var(--space-2);
+  }
+
+  .admin-tab-btn {
+    white-space: nowrap;
+    padding: 8px 14px;
+    font-size: 0.82rem;
+  }
+
+  .admin-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .toolbar-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .toolbar-filters .admin-select,
+  .toolbar-filters .btn {
+    width: 100%;
+  }
+
+  .admin-table th,
+  .admin-table td {
+    padding: 10px 12px;
+    font-size: 0.8rem;
+  }
+
+  .admin-modal-box {
+    margin: var(--space-2);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
 }
 
 /* Programs Grid */
