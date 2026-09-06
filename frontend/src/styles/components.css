@@ -1,3 +1,8 @@
+/* ==========================================================================
+   AT SENSEI ACADEMY — EDTECH DESIGN SYSTEM (PW / VEDANTU / UDEMY INSPIRED)
+   High-Converting Components, Vibrant Badges, Course Cards, Roadmaps & Modals
+   ========================================================================== */
+
 /* ==================== BUTTONS ==================== */
 .btn {
   display: inline-flex;
@@ -7,73 +12,140 @@
   font-family: var(--font-heading);
   font-weight: var(--fw-bold);
   font-size: var(--font-size-sm);
-  padding: 0.75rem 1.5rem;
+  padding: 0.8rem 1.6rem;
   border-radius: var(--radius-md);
   border: 1px solid transparent;
   cursor: pointer;
   transition: all var(--transition-normal);
   text-decoration: none;
   white-space: nowrap;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-brand-blue);
+  outline-offset: 2px;
 }
 
 .btn-primary {
-  background-color: var(--color-primary-navy);
+  background: linear-gradient(135deg, var(--color-primary-navy) 0%, var(--color-primary-navy-light) 100%);
   color: var(--color-text-inverse);
+  box-shadow: 0 4px 12px rgba(7, 26, 77, 0.2);
 }
+
 .btn-primary:hover {
-  background-color: var(--color-primary-navy-light);
+  background: linear-gradient(135deg, var(--color-primary-navy-light) 0%, #153c9e 100%);
+  color: var(--color-text-inverse);
   transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(7, 26, 77, 0.35);
 }
 
 .btn-blue {
-  background-color: var(--color-brand-blue);
+  background: linear-gradient(135deg, var(--color-brand-blue) 0%, var(--color-brand-blue-light) 100%);
   color: var(--color-text-inverse);
+  box-shadow: 0 4px 14px rgba(83, 103, 184, 0.25);
 }
+
 .btn-blue:hover {
-  background-color: var(--color-brand-blue-light);
   transform: translateY(-2px);
+  box-shadow: var(--shadow-glow-blue);
 }
 
 .btn-gold {
-  background-color: var(--color-accent-gold);
+  background: linear-gradient(135deg, var(--color-accent-gold) 0%, #f7df59 100%);
   color: var(--color-primary-navy);
+  font-weight: 800;
+  box-shadow: 0 4px 15px rgba(242, 209, 46, 0.3);
 }
+
 .btn-gold:hover {
-  background-color: var(--color-accent-gold-dark);
+  background: linear-gradient(135deg, #e6c520 0%, var(--color-accent-gold) 100%);
   transform: translateY(-2px);
+  box-shadow: var(--shadow-glow-gold);
+}
+
+.btn-red {
+  background: linear-gradient(135deg, var(--color-sensei-red) 0%, #e0443d 100%);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(217, 40, 32, 0.25);
+}
+
+.btn-red:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow-red);
 }
 
 .btn-outline {
   background-color: transparent;
-  border-color: var(--color-border-medium);
+  border: 1.5px solid var(--color-border-medium);
   color: var(--color-primary-navy);
 }
+
 .btn-outline:hover {
   border-color: var(--color-primary-navy);
-  background-color: var(--color-bg-alt);
+  background-color: var(--color-brand-blue-soft);
+  transform: translateY(-2px);
 }
 
-.btn-lg { padding: 0.95rem 2rem; font-size: var(--font-size-base); border-radius: var(--radius-lg); }
-.btn-sm { padding: 0.4rem 0.875rem; font-size: var(--font-size-xs); border-radius: var(--radius-sm); }
-.btn-block { width: 100%; }
+.btn-lg {
+  padding: 1rem 2.2rem;
+  font-size: var(--font-size-base);
+  border-radius: var(--radius-lg);
+}
 
-/* ==================== BADGES ==================== */
+.btn-sm {
+  padding: 0.45rem 1rem;
+  font-size: var(--font-size-xs);
+  border-radius: var(--radius-sm);
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* ==================== BADGES & TAGS ==================== */
 .badge {
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
-  padding: 0.25rem 0.65rem;
+  padding: 0.3rem 0.75rem;
   border-radius: var(--radius-full);
   font-size: var(--font-size-xs);
   font-weight: var(--fw-bold);
   text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .badge-navy { background-color: rgba(7, 26, 77, 0.08); color: var(--color-primary-navy); }
 .badge-blue { background-color: var(--color-brand-blue-soft); color: var(--color-brand-blue); }
 .badge-red { background-color: var(--color-sensei-red-soft); color: var(--color-sensei-red); }
 .badge-gold { background-color: var(--color-accent-gold-soft); color: #92400e; border: 1px solid rgba(242, 209, 46, 0.5); }
-.badge-emerald { background-color: var(--color-emerald-soft); color: #065f46; }
+.badge-emerald { background-color: var(--color-emerald-soft); color: #065f46; font-weight: 700; }
+
+/* ==================== EDTECH SEARCH & FILTER BAR ==================== */
+.edtech-search-bar {
+  background: #fff;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-xl);
+  padding: var(--space-3) var(--space-5);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  max-width: 800px;
+  margin: 0 auto var(--space-8) auto;
+}
+
+.edtech-search-input {
+  flex-grow: 1;
+  border: none;
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  outline: none;
+  background: transparent;
+}
 
 /* ==================== PROGRAM CARDS & GRID ==================== */
 .program-filter-tabs {
@@ -85,7 +157,7 @@
 }
 
 .filter-btn {
-  padding: var(--space-2) var(--space-5);
+  padding: 0.65rem 1.4rem;
   border-radius: var(--radius-full);
   border: 1px solid var(--color-border-subtle);
   background-color: var(--color-bg-surface);
@@ -97,10 +169,16 @@
   transition: all var(--transition-fast);
 }
 
+.filter-btn:hover {
+  border-color: var(--color-brand-blue);
+  color: var(--color-brand-blue);
+}
+
 .filter-btn.active {
-  background-color: var(--color-primary-navy);
+  background: var(--color-primary-navy);
   color: var(--color-text-inverse);
   border-color: var(--color-primary-navy);
+  box-shadow: var(--shadow-sm);
 }
 
 .programs-grid {
@@ -109,6 +187,7 @@
   gap: var(--space-8);
 }
 
+/* PW / Vedantu Style Course Card */
 .program-card {
   background-color: var(--color-bg-surface);
   border-radius: var(--radius-xl);
@@ -116,36 +195,57 @@
   padding: var(--space-8);
   display: flex;
   flex-direction: column;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 4px 20px rgba(7, 26, 77, 0.06);
   position: relative;
   overflow: hidden;
-  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal);
 }
 
 .program-card:hover {
   transform: translateY(-6px);
-  box-shadow: var(--shadow-xl);
+  box-shadow: 0 16px 35px rgba(7, 26, 77, 0.12);
+  border-color: rgba(83, 103, 184, 0.4);
 }
 
 .program-card.featured {
-  border-color: var(--color-accent-gold);
+  border: 2px solid var(--color-accent-gold);
+  box-shadow: 0 8px 30px rgba(242, 209, 46, 0.15);
 }
 
 .program-card-ribbon {
   position: absolute;
   top: 18px;
-  right: -32px;
+  right: -34px;
   background: linear-gradient(90deg, var(--color-sensei-red) 0%, #f43f5e 100%);
   color: #fff;
   font-size: 0.65rem;
   font-weight: var(--fw-extrabold);
   text-transform: uppercase;
-  padding: 4px 36px;
+  letter-spacing: 0.06em;
+  padding: 5px 38px;
   transform: rotate(45deg);
+  box-shadow: var(--shadow-xs);
+}
+
+.edtech-meta-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-3);
+}
+
+.edtech-rating {
+  color: #f59e0b;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
 }
 
 .program-details-box {
-  background-color: var(--color-bg-alt);
+  background: linear-gradient(135deg, var(--color-bg-alt) 0%, #edf2f9 100%);
   border-radius: var(--radius-md);
   padding: var(--space-4);
   margin-bottom: var(--space-5);
@@ -165,7 +265,7 @@
   color: var(--color-text-primary);
   font-size: var(--font-size-xs);
   font-weight: var(--fw-medium);
-  padding: 0.25rem 0.6rem;
+  padding: 0.3rem 0.65rem;
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-border-subtle);
 }
@@ -192,6 +292,34 @@
   gap: var(--space-3);
 }
 
+/* ==================== EDTECH TRUST CARDS & STATS ==================== */
+.edtech-trust-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+
+.edtech-trust-item {
+  background: #fff;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-normal);
+}
+
+.edtech-trust-item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.edtech-trust-icon {
+  font-size: 2.25rem;
+  margin-bottom: var(--space-2);
+}
+
 /* ==================== 5 JUTSU & MENTORS ==================== */
 .jutsu-grid, .mentors-grid {
   display: grid;
@@ -205,14 +333,15 @@
   padding: var(--space-6);
   border: 1px solid var(--color-border-subtle);
   transition: all var(--transition-normal);
+  box-shadow: var(--shadow-sm);
 }
 
 .mentor-card { text-align: center; border-radius: var(--radius-xl); padding: var(--space-8); }
 .mentor-card:hover, .jutsu-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
 
 .mentor-avatar {
-  width: 88px;
-  height: 88px;
+  width: 92px;
+  height: 92px;
   border-radius: 50%;
   margin: 0 auto var(--space-4) auto;
   background: linear-gradient(135deg, var(--color-brand-blue) 0%, var(--color-primary-navy) 100%);
@@ -220,15 +349,15 @@
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-size: 2rem;
+  font-size: 2.25rem;
   font-weight: var(--fw-bold);
-  border: 4px solid var(--color-bg-surface);
-  box-shadow: var(--shadow-md);
+  border: 4px solid #fff;
+  box-shadow: 0 4px 15px rgba(7, 26, 77, 0.15);
 }
 
 .jutsu-number {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: var(--radius-full);
   background-color: var(--color-sensei-red-soft);
   color: var(--color-sensei-red);
@@ -244,9 +373,9 @@
 .workshop-banner {
   background: linear-gradient(135deg, var(--color-primary-navy-dark) 0%, var(--color-primary-navy) 60%, var(--color-brand-blue) 100%);
   border-radius: var(--radius-xl);
-  padding: var(--space-10);
+  padding: var(--space-12);
   color: var(--color-text-inverse);
-  box-shadow: var(--shadow-2xl);
+  box-shadow: 0 20px 40px rgba(7, 26, 77, 0.3);
 }
 
 .workshop-banner-grid {
@@ -289,23 +418,24 @@
 
 .form-input, .form-select {
   width: 100%;
-  padding: 0.75rem 1rem;
+  padding: 0.8rem 1rem;
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border-medium);
   font-size: var(--font-size-sm);
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .form-input:focus, .form-select:focus {
   outline: none;
   border-color: var(--color-brand-blue);
-  box-shadow: 0 0 0 3px rgba(83, 103, 184, 0.15);
+  box-shadow: 0 0 0 3px rgba(83, 103, 184, 0.18);
 }
 
 .consent-box {
   background-color: var(--color-sensei-red-soft);
   border: 1px solid rgba(217, 40, 32, 0.2);
   border-radius: var(--radius-md);
-  padding: var(--space-4);
+  padding: var(--space-5);
 }
 
 .checkbox-label {
@@ -384,7 +514,7 @@
 .policy-tab-btn {
   background: none;
   border: none;
-  padding: var(--space-2) var(--space-4);
+  padding: 0.6rem 1rem;
   font-size: var(--font-size-xs);
   font-weight: var(--fw-bold);
   cursor: pointer;
