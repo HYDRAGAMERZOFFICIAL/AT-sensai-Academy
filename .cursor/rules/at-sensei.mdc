@@ -1,0 +1,16 @@
+---
+description: AT Sensei Academy production and compliance rules
+globs: **/*
+alwaysApply: true
+---
+
+Follow AGENTS.md.
+
+Never invent institutional facts.
+Never hard-code secrets.
+Never weaken security to fix an error.
+Never trust client-side authorization or payment state.
+Treat Foundation students as potentially minors.
+Minimize personal data collection.
+Do not publish unapproved legal text.
+Do not add unsupported marketing claims.
