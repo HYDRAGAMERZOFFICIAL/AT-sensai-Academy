@@ -28,4 +28,7 @@ echo   Services Started Successfully!
 echo   * React Web App  : http://localhost:3000
 echo   * REST APIs      : http://localhost:8081/api/v1/programs
 echo   * H2 DB Console  : http://localhost:8081/h2-console
+echo     - JDBC URL     : jdbc:h2:mem:atsenseidb
+echo     - User Name    : sa
+echo     - Password     : (leave empty)
 echo ========================================================

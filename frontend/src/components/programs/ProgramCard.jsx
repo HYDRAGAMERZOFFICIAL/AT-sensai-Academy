@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { formatFeeDisplay } from '../../utils/formatters';
 
 export function ProgramCard({ program, onEnrollClick }) {
+  const [isExpanded, setIsExpanded] = React.useState(false);
+
   const subjects = typeof program.subjectsJson === 'string'
     ? (() => { try { return JSON.parse(program.subjectsJson); } catch (e) { return []; } })()
     : (program.subjectsJson || []);
@@ -14,7 +16,7 @@ export function ProgramCard({ program, onEnrollClick }) {
   const isCombo = program.code === 'ssc-banking-combo';
 
   return (
-    <article className={`program-card ${isCombo ? 'featured-card' : ''}`}>
+    <article className={`program-card glass-card ${isCombo ? 'featured-card' : ''}`}>
       {isCombo && (
         <div className="program-card-badge">
           ★ Maximum Value Pathway
@@ -55,30 +57,39 @@ export function ProgramCard({ program, onEnrollClick }) {
         </div>
       </div>
 
-      {exams.length > 0 && (
-        <div className="program-section-preview">
-          <div className="program-section-label">Target Recruitments & Boards</div>
-          <div className="exam-target-chips">
-            {exams.map((exam, idx) => (
-              <span key={idx} className="exam-chip">{exam}</span>
-            ))}
+      {/* Expandable Details / Read More Section */}
+      <div className={`program-expandable-content ${isExpanded ? 'expanded' : 'collapsed'}`}>
+        {exams.length > 0 && (
+          <div className="program-section-preview">
+            <div className="program-section-label">Target Recruitments & Boards</div>
+            <div className="exam-target-chips">
+              {exams.map((exam, idx) => (
+                <span key={idx} className="exam-chip">{exam}</span>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {subjects.length > 0 && (
-        <div className="program-section-preview">
-          <div className="program-section-label">Core Subjects</div>
-          <div className="subject-tags">
-            {subjects.slice(0, 4).map((s, idx) => (
-              <span key={idx} className="subject-tag">{s}</span>
-            ))}
-            {subjects.length > 4 && (
-              <span className="subject-tag">+{subjects.length - 4} more</span>
-            )}
+        {subjects.length > 0 && (
+          <div className="program-section-preview">
+            <div className="program-section-label">Core Subjects Covered</div>
+            <div className="subject-tags">
+              {subjects.map((s, idx) => (
+                <span key={idx} className="subject-tag">{s}</span>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
+
+      <button
+        type="button"
+        className="btn-read-more-toggle"
+        onClick={() => setIsExpanded(!isExpanded)}
+        aria-expanded={isExpanded}
+      >
+        <span>{isExpanded ? '▲ Hide Full Syllabus & Exams' : '▼ Read More (Syllabus & Exams)'}</span>
+      </button>
 
       <div className="program-pricing-box">
         <div>
