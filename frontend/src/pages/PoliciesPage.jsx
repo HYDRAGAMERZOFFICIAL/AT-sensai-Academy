@@ -1,108 +1,111 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { PolicyService } from '../api/policyService';
+import { COMPREHENSIVE_POLICIES } from '../data/legalPolicies';
 
 export function PoliciesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTabQuery = searchParams.get('tab') || 'privacy';
   const [currentTab, setCurrentTab] = useState(activeTabQuery);
-  const [policies, setPolicies] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [policies, setPolicies] = useState(COMPREHENSIVE_POLICIES);
 
   useEffect(() => {
     async function loadPolicies() {
       try {
-        setLoading(true);
         const data = await PolicyService.getAllPolicies();
-        const map = {};
-        if (Array.isArray(data)) {
-          data.forEach(p => { map[p.policyKey] = p; });
+        if (Array.isArray(data) && data.length > 0) {
+          const map = { ...COMPREHENSIVE_POLICIES };
+          data.forEach(p => {
+            if (p.policyKey && p.contentHtml) {
+              map[p.policyKey] = p;
+            }
+          });
+          setPolicies(map);
         }
-        setPolicies(map);
       } catch (err) {
-        console.error("Failed to load policies:", err);
-      } finally {
-        setLoading(false);
+        console.warn("Using comprehensive local legal policies data");
       }
     }
     loadPolicies();
   }, []);
+
+  useEffect(() => {
+    const tabParam = searchParams.get('tab');
+    if (tabParam && tabParam !== currentTab) {
+      setCurrentTab(tabParam);
+    }
+  }, [searchParams]);
 
   const handleTabChange = (key) => {
     setCurrentTab(key);
     setSearchParams({ tab: key });
   };
 
-  const currentPolicy = policies[currentTab] || {
+  const currentPolicy = policies[currentTab] || COMPREHENSIVE_POLICIES[currentTab] || {
     title: 'Policy Document',
-    contentHtml: '<p>Loading legal policy details...</p>'
+    contentHtml: '<p>Select a legal policy tab above to view the full text.</p>'
   };
 
   return (
     <div className="page-policies" style={{ paddingTop: 'var(--space-12)', paddingBottom: 'var(--space-20)' }}>
-      <div className="container" style={{ maxWidth: '900px' }}>
+      <div className="container" style={{ maxWidth: '960px' }}>
         <div style={{ textAlign: 'center', marginBottom: 'var(--space-8)' }}>
-          <span className="badge badge-navy" style={{ marginBottom: 'var(--space-2)' }}>Legal & Governance</span>
-          <h1>Institutional Governance & Policies</h1>
-          <p style={{ color: 'var(--color-text-secondary)' }}>
-            Clear commitments regarding student data privacy, DPDP compliance, minor protection, and academic terms.
+          <span className="section-tag" style={{ marginBottom: 'var(--space-2)' }}>Institutional Governance</span>
+          <h1>Legal & Privacy Governance</h1>
+          <p style={{ color: 'var(--color-text-secondary)', maxWidth: '700px', margin: '0 auto' }}>
+            Transparent legal terms, DPDP compliance, student data safety, and zero-deception coaching standards for AT Sensei Academy.
           </p>
         </div>
 
-        <div className="form-card">
+        <div className="form-card" style={{ padding: 'var(--space-8)' }}>
           <div className="policy-tabs" style={{ marginBottom: 'var(--space-8)' }}>
             <button
               type="button"
               className={`policy-tab-btn ${currentTab === 'privacy' ? 'active' : ''}`}
               onClick={() => handleTabChange('privacy')}
             >
-              Privacy Policy
+              Privacy Policy (DPDP)
             </button>
             <button
               type="button"
               className={`policy-tab-btn ${currentTab === 'terms' ? 'active' : ''}`}
               onClick={() => handleTabChange('terms')}
             >
-              Terms of Service
+              Terms & Conditions
             </button>
             <button
               type="button"
               className={`policy-tab-btn ${currentTab === 'refund' ? 'active' : ''}`}
               onClick={() => handleTabChange('refund')}
             >
-              Refund Policy
+              Fee & Refund Policy
             </button>
             <button
               type="button"
               className={`policy-tab-btn ${currentTab === 'minorConsent' ? 'active' : ''}`}
               onClick={() => handleTabChange('minorConsent')}
             >
-              Minor & Parent Consent
+              Minor Protection & Consent
             </button>
             <button
               type="button"
               className={`policy-tab-btn ${currentTab === 'disclaimer' ? 'active' : ''}`}
               onClick={() => handleTabChange('disclaimer')}
             >
-              Disclaimer
+              Disclaimer & Standards
             </button>
           </div>
 
-          {loading ? (
-            <div style={{ textAlign: 'center', padding: 'var(--space-8)', color: 'var(--color-text-muted)' }}>
-              Loading policy content from secure database...
-            </div>
-          ) : (
-            <div>
-              <h2 style={{ fontSize: '1.75rem', marginBottom: 'var(--space-4)', color: 'var(--color-primary-navy)' }}>
-                {currentPolicy.title}
-              </h2>
-              <div
-                dangerouslySetInnerHTML={{ __html: currentPolicy.contentHtml }}
-                style={{ fontSize: '0.95rem', lineHeight: 1.8, color: 'var(--color-text-secondary)' }}
-              />
-            </div>
-          )}
+          <div>
+            <h2 style={{ fontSize: '1.75rem', marginBottom: 'var(--space-4)', color: 'var(--color-primary-navy)' }}>
+              {currentPolicy.title}
+            </h2>
+            <div
+              dangerouslySetInnerHTML={{ __html: currentPolicy.contentHtml }}
+              className="legal-content-container"
+              style={{ fontSize: '0.95rem', lineHeight: 1.8, color: 'var(--color-text-secondary)' }}
+            />
+          </div>
         </div>
       </div>
     </div>

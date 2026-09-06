@@ -1,7 +1,10 @@
 import React from 'react';
+import { ExamTicker } from '../components/common/ExamTicker';
 import { HeroSection } from '../components/hero/HeroSection';
+import { CourseFinderBar } from '../components/common/CourseFinderBar';
 import { PhilosophySection } from '../components/philosophy/PhilosophySection';
 import { ProgramSection } from '../components/programs/ProgramSection';
+import { CampusFacilities } from '../components/facilities/CampusFacilities';
 import { WhyGovtCareer } from '../components/career/WhyGovtCareer';
 import { MethodologySection } from '../components/methodology/MethodologySection';
 import { MentorSection } from '../components/mentors/MentorSection';
@@ -21,9 +24,12 @@ export function HomePage() {
 
   return (
     <div className="page-home">
+      <ExamTicker />
       <HeroSection />
+      <CourseFinderBar />
       <PhilosophySection />
       <ProgramSection onEnrollSelect={handleEnrollSelect} />
+      <CampusFacilities />
       <WhyGovtCareer />
       <MethodologySection />
       <MentorSection />
