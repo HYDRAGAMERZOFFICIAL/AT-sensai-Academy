@@ -59,9 +59,9 @@
   --color-border-dark: rgba(255, 255, 255, 0.12);
 
   /* Typography Fonts */
-  --font-heading: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-accent: 'Playfair Display', Georgia, serif;
+  --font-heading: 'Outfit', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-accent: 'Outfit', -apple-system, sans-serif;
 
   /* Typography Scale */
   --font-size-xs: 0.75rem;     /* 12px */

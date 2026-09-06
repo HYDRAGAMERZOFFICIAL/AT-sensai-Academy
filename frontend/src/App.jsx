@@ -5,7 +5,6 @@ import { Header } from './components/layout/Header';
 import { MobileDrawer } from './components/layout/MobileDrawer';
 import { Footer } from './components/layout/Footer';
 import { ScrollToTop } from './components/common/ScrollToTop';
-import { FloatingWhatsApp } from './components/common/FloatingWhatsApp';
 import { SenseiChatbot } from './components/common/SenseiChatbot';
 
 // Dedicated Modular Pages
@@ -55,8 +54,7 @@ export function App() {
 
         <Footer />
 
-        {/* Global Floating Actions */}
-        <FloatingWhatsApp />
+        {/* Global Floating AI Assistant */}
         <SenseiChatbot />
 
         {/* Global Modals for Quick Actions */}
