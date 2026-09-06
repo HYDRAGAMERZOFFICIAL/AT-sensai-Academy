@@ -23,9 +23,9 @@ export function HeroSection() {
           </p>
 
           <div className="hero-cta-group">
-            <a href="#programs" className="btn btn-primary btn-lg">
+            <Link to="/programs" className="btn btn-primary btn-lg">
               Explore Programs
-            </a>
+            </Link>
             <button
               type="button"
               className="btn btn-gold btn-lg"

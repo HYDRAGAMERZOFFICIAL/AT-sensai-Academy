@@ -1,29 +1,33 @@
 package com.atsensei.academy.modules.enquiry;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public class EnquiryRequestDTO {
 
     @NotBlank(message = "Student full name is required")
     @Size(min = 2, max = 100, message = "Name must be between 2 and 100 characters")
+    @JsonAlias({"fullName", "studentName"})
     private String name;
 
     @NotBlank(message = "Phone number is required")
-    @Pattern(regexp = "^[6-9]\\d{9}$", message = "Phone must be a valid 10-digit Indian mobile number")
     private String phone;
 
     private String email;
 
     @NotBlank(message = "Target course selection is required")
+    @JsonAlias({"course", "courseId", "programCode"})
     private String courseCode;
 
+    @JsonAlias({"preferredBatch", "batch"})
     private String batchPreference;
 
     // Minor / Parent Guardian fields
     private String parentName;
     private String parentPhone;
+
+    @JsonAlias({"parentConsent", "consentGiven"})
     private Boolean parentConsentGiven;
 
     public EnquiryRequestDTO() {}
@@ -31,7 +35,17 @@ public class EnquiryRequestDTO {
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
-    public String getPhone() { return phone; }
+    public String getPhone() { 
+        if (phone == null) return null;
+        // Clean any non-digit chars and strip +91 or leading 0
+        String digits = phone.replaceAll("\\D", "");
+        if (digits.length() == 12 && digits.startsWith("91")) {
+            return digits.substring(2);
+        } else if (digits.length() == 11 && digits.startsWith("0")) {
+            return digits.substring(1);
+        }
+        return digits;
+    }
     public void setPhone(String phone) { this.phone = phone; }
 
     public String getEmail() { return email; }
@@ -46,9 +60,18 @@ public class EnquiryRequestDTO {
     public String getParentName() { return parentName; }
     public void setParentName(String parentName) { this.parentName = parentName; }
 
-    public String getParentPhone() { return parentPhone; }
+    public String getParentPhone() { 
+        if (parentPhone == null) return null;
+        String digits = parentPhone.replaceAll("\\D", "");
+        if (digits.length() == 12 && digits.startsWith("91")) {
+            return digits.substring(2);
+        } else if (digits.length() == 11 && digits.startsWith("0")) {
+            return digits.substring(1);
+        }
+        return digits;
+    }
     public void setParentPhone(String parentPhone) { this.parentPhone = parentPhone; }
 
-    public Boolean getParentConsentGiven() { return parentConsentGiven; }
+    public Boolean getParentConsentGiven() { return parentConsentGiven != null && parentConsentGiven; }
     public void setParentConsentGiven(Boolean parentConsentGiven) { this.parentConsentGiven = parentConsentGiven; }
 }

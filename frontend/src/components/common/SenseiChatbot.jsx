@@ -217,8 +217,8 @@ export function SenseiChatbot() {
             <span className="launcher-icon-close">✕</span>
           ) : (
             <div className="launcher-icon-ai">
+              <img src="/favicon.png" alt="Sensei AI" className="chatbot-favicon-img" />
               <span className="ai-icon-sparkle">✨</span>
-              <span className="ai-icon-robot">🤖</span>
             </div>
           )}
         </button>
@@ -231,7 +231,7 @@ export function SenseiChatbot() {
           <div className="chatbot-header">
             <div className="chatbot-header-info">
               <div className="chatbot-avatar">
-                <span>🥋</span>
+                <img src="/favicon.png" alt="AT Sensei" className="header-favicon-img" />
                 <span className="status-dot"></span>
               </div>
               <div>
@@ -255,7 +255,11 @@ export function SenseiChatbot() {
           <div className="chatbot-messages">
             {messages.map((m, idx) => (
               <div key={idx} className={`chat-bubble-row ${m.sender === 'user' ? 'row-user' : 'row-bot'}`}>
-                {m.sender === 'bot' && <div className="chat-msg-avatar">🥋</div>}
+                {m.sender === 'bot' && (
+                  <div className="chat-msg-avatar">
+                    <img src="/favicon.png" alt="AT" className="msg-favicon-img" />
+                  </div>
+                )}
                 <div className={`chat-bubble ${m.sender === 'user' ? 'bubble-user' : 'bubble-bot'}`}>
                   <div
                     className="bubble-content"
@@ -274,7 +278,9 @@ export function SenseiChatbot() {
 
             {isTyping && (
               <div className="chat-bubble-row row-bot">
-                <div className="chat-msg-avatar">🥋</div>
+                <div className="chat-msg-avatar">
+                  <img src="/favicon.png" alt="AT" className="msg-favicon-img" />
+                </div>
                 <div className="chat-bubble bubble-bot typing-bubble">
                   <span className="typing-dot"></span>
                   <span className="typing-dot"></span>

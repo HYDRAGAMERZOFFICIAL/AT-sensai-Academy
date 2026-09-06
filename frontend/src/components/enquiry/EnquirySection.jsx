@@ -56,12 +56,26 @@ export function EnquirySection({ preselectedCourse = '' }) {
       return;
     }
 
+    const cleanPhone = formData.phone.replace(/\D/g, '').replace(/^(91|0)/, '');
+    if (cleanPhone.length < 10) {
+      showToast("Please enter a valid 10-digit mobile number.", "error");
+      return;
+    }
+
     try {
       setIsSubmitting(true);
-      await EnquiryService.submitEnquiry({
-        ...formData,
-        parentConsent: isFoundation ? formData.parentConsent : false
-      });
+      const payload = {
+        name: formData.fullName.trim(),
+        phone: cleanPhone,
+        email: formData.email.trim(),
+        courseCode: formData.courseCode,
+        batchPreference: formData.preferredBatch,
+        parentName: isFoundation && formData.parentName ? formData.parentName.trim() : null,
+        parentPhone: isFoundation && formData.parentPhone ? formData.parentPhone.replace(/\D/g, '').replace(/^(91|0)/, '') : null,
+        parentConsentGiven: isFoundation ? Boolean(formData.parentConsent) : false
+      };
+
+      await EnquiryService.submitEnquiry(payload);
 
       const refNo = `ATS-2026-${Math.floor(100000 + Math.random() * 900000)}`;
       const courseTitle = COURSE_MAP[formData.courseCode] || formData.courseCode;
@@ -69,7 +83,7 @@ export function EnquirySection({ preselectedCourse = '' }) {
       setSubmissionSuccess({
         refNo,
         name: formData.fullName,
-        phone: formData.phone,
+        phone: cleanPhone,
         email: formData.email,
         courseTitle,
         batch: formData.preferredBatch
