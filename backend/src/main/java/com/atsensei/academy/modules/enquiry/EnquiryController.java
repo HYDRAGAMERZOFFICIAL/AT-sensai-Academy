@@ -50,4 +50,19 @@ public class EnquiryController {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResponse.error("Enquiry not found"));
     }
+
+    @PostMapping("/bulk-delete")
+    public ResponseEntity<ApiResponse<Integer>> bulkDeleteEnquiries(@RequestBody BulkEnquiryActionDTO dto) {
+        int deletedCount = enquiryService.bulkDeleteEnquiries(dto != null ? dto.getIds() : null);
+        return ResponseEntity.ok(ApiResponse.ok(deletedCount + " enquiries deleted successfully", deletedCount));
+    }
+
+    @PostMapping("/bulk-status")
+    public ResponseEntity<ApiResponse<Integer>> bulkUpdateStatus(@RequestBody BulkEnquiryActionDTO dto) {
+        int updatedCount = enquiryService.bulkUpdateStatus(
+                dto != null ? dto.getIds() : null,
+                dto != null ? dto.getStatus() : null
+        );
+        return ResponseEntity.ok(ApiResponse.ok(updatedCount + " enquiries updated to " + (dto != null ? dto.getStatus() : ""), updatedCount));
+    }
 }

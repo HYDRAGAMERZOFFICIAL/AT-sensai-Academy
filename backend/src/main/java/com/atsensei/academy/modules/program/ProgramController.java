@@ -48,4 +48,20 @@ public class ProgramController {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body(ApiResponse.error("Program not found with code: " + code)));
     }
+
+    @PostMapping
+    public ResponseEntity<ApiResponse<ProgramEntity>> createProgram(@RequestBody ProgramEntity program) {
+        ProgramEntity saved = programService.createProgram(program);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.ok("Program created successfully", saved));
+    }
+
+    @DeleteMapping("/{code}")
+    public ResponseEntity<ApiResponse<Boolean>> deleteProgram(@PathVariable String code) {
+        boolean deleted = programService.deleteProgram(code);
+        if (deleted) {
+            return ResponseEntity.ok(ApiResponse.ok("Program deleted successfully", true));
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResponse.error("Program not found with code: " + code));
+    }
 }

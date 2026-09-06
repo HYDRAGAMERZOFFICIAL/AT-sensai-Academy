@@ -48,4 +48,19 @@ public class ProgramService {
             return programRepository.save(program);
         });
     }
+
+    public ProgramEntity createProgram(ProgramEntity program) {
+        if (program.getCode() == null || program.getCode().isBlank()) {
+            String generatedCode = program.getTitle().toLowerCase().replaceAll("[^a-z0-9]+", "-");
+            program.setCode(generatedCode);
+        }
+        return programRepository.save(program);
+    }
+
+    public boolean deleteProgram(String code) {
+        return programRepository.findByCode(code).map(p -> {
+            programRepository.delete(p);
+            return true;
+        }).orElse(false);
+    }
 }

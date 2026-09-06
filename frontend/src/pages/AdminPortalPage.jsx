@@ -26,6 +26,9 @@ export function AdminPortalPage() {
   const [selectedEnquiryForNotes, setSelectedEnquiryForNotes] = useState(null);
   const [notesDraft, setNotesDraft] = useState('');
 
+  // Bulk selection state for Enquiries
+  const [selectedEnquiryIds, setSelectedEnquiryIds] = useState([]);
+
   // Workshop Bookings state
   const [workshops, setWorkshops] = useState([]);
   const [workshopsLoading, setWorkshopsLoading] = useState(false);
@@ -49,6 +52,20 @@ export function AdminPortalPage() {
   const [programs, setPrograms] = useState([]);
   const [programsLoading, setProgramsLoading] = useState(false);
   const [editingProgram, setEditingProgram] = useState(null);
+  const [isAddProgramOpen, setIsAddProgramOpen] = useState(false);
+  const [newProgram, setNewProgram] = useState({
+    title: '',
+    code: '',
+    category: 'banking',
+    tag: 'Flagship Track',
+    feeDisplay: '₹',
+    feeSubtext: 'Inclusive of GST & Practice Materials',
+    validity: '2 Years Unlimited',
+    timings: 'Daily 10:00 AM – 1:00 PM & 6:30 PM – 8:30 PM',
+    batches: 'Morning & Evening Batches',
+    eligibility: 'Graduates & Final Year Students',
+    description: ''
+  });
 
   // Handle Login
   const handleLogin = async (e) => {
@@ -104,6 +121,7 @@ export function AdminPortalPage() {
       setEnquiriesLoading(true);
       const data = await AdminService.getEnquiries();
       setEnquiries(data || []);
+      setSelectedEnquiryIds([]);
     } catch (err) {
       showError('Failed to load enquiries: ' + err.message);
     } finally {
@@ -147,39 +165,92 @@ export function AdminPortalPage() {
     }
   };
 
+  // Copy helper
+  const copyToClipboard = (text, label) => {
+    navigator.clipboard.writeText(text);
+    showSuccess(`Copied ${label} (${text}) to clipboard!`);
+  };
+
+  // Helper formatting for unique Application / Registration Numbers
+  const formatEnquiryRegNo = (id) => `ATS-ENQ-2026-${String(id).padStart(4, '0')}`;
+  const formatWorkshopRegNo = (id) => `ATS-WK-2026-${String(id).padStart(4, '0')}`;
+
   // Status Updater
   const handleStatusChange = async (enquiryId, newStatus) => {
     try {
       await AdminService.updateEnquiryStatus(enquiryId, newStatus);
-      showSuccess(`Enquiry status updated to ${newStatus}`);
+      showSuccess(`Enquiry #${enquiryId} status updated to ${newStatus}`);
       setEnquiries(prev => prev.map(e => e.id === enquiryId ? { ...e, status: newStatus } : e));
     } catch (err) {
       showError('Failed to update status: ' + err.message);
     }
   };
 
-  // Save Notes
+  // Save Notes — closes immediately & updates state
   const handleSaveNotes = async () => {
     if (!selectedEnquiryForNotes) return;
     try {
       await AdminService.updateEnquiryStatus(selectedEnquiryForNotes.id, selectedEnquiryForNotes.status, notesDraft);
-      showSuccess('Internal notes saved successfully');
       setEnquiries(prev => prev.map(e => e.id === selectedEnquiryForNotes.id ? { ...e, adminNotes: notesDraft } : e));
       setSelectedEnquiryForNotes(null);
+      showSuccess('Internal counselor notes saved immediately!');
     } catch (err) {
       showError('Failed to save notes: ' + err.message);
     }
   };
 
-  // Delete Enquiry
+  // Delete Single Enquiry
   const handleDeleteEnquiry = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this enquiry record?')) return;
+    if (!window.confirm(`Are you sure you want to delete enquiry record ${formatEnquiryRegNo(id)}?`)) return;
     try {
       await AdminService.deleteEnquiry(id);
-      showSuccess('Enquiry deleted successfully');
       setEnquiries(prev => prev.filter(e => e.id !== id));
+      setSelectedEnquiryIds(prev => prev.filter(selectedId => selectedId !== id));
+      showSuccess(`Enquiry ${formatEnquiryRegNo(id)} deleted`);
     } catch (err) {
       showError('Failed to delete enquiry: ' + err.message);
+    }
+  };
+
+  // Bulk Selection Handlers
+  const handleSelectAllEnquiries = (e) => {
+    if (e.target.checked) {
+      setSelectedEnquiryIds(filteredEnquiries.map(item => item.id));
+    } else {
+      setSelectedEnquiryIds([]);
+    }
+  };
+
+  const handleToggleSelectEnquiry = (id) => {
+    setSelectedEnquiryIds(prev => 
+      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+    );
+  };
+
+  // Bulk Delete
+  const handleBulkDelete = async () => {
+    if (selectedEnquiryIds.length === 0) return;
+    if (!window.confirm(`Are you sure you want to permanently delete all ${selectedEnquiryIds.length} selected enquiry records?`)) return;
+    try {
+      await AdminService.bulkDeleteEnquiries(selectedEnquiryIds);
+      setEnquiries(prev => prev.filter(e => !selectedEnquiryIds.includes(e.id)));
+      showSuccess(`Successfully deleted ${selectedEnquiryIds.length} enquiries!`);
+      setSelectedEnquiryIds([]);
+    } catch (err) {
+      showError('Bulk delete failed: ' + err.message);
+    }
+  };
+
+  // Bulk Status Change
+  const handleBulkStatusChange = async (newStatus) => {
+    if (selectedEnquiryIds.length === 0) return;
+    try {
+      await AdminService.bulkUpdateEnquiryStatus(selectedEnquiryIds, newStatus);
+      setEnquiries(prev => prev.map(e => selectedEnquiryIds.includes(e.id) ? { ...e, status: newStatus } : e));
+      showSuccess(`Updated ${selectedEnquiryIds.length} enquiries to ${newStatus}!`);
+      setSelectedEnquiryIds([]);
+    } catch (err) {
+      showError('Bulk status update failed: ' + err.message);
     }
   };
 
@@ -188,7 +259,8 @@ export function AdminPortalPage() {
     const rawPhone = (enquiry.phone || '').replace(/\D/g, '');
     const phone = rawPhone.startsWith('91') ? rawPhone : `91${rawPhone}`;
     const courseTitle = enquiry.courseCode ? enquiry.courseCode.toUpperCase() : 'Coaching Track';
-    const text = `Hi ${enquiry.studentName || 'there'}! 👋 Thank you for enquiring about the *${courseTitle}* at *AT Sensei Academy*, Bangalore. We would love to assist you with batch schedules, syllabus blueprint, and upcoming demo sessions. When would be a good time to connect?`;
+    const regNo = formatEnquiryRegNo(enquiry.id);
+    const text = `Hi ${enquiry.studentName || 'there'}! 👋 Thank you for enquiring about the *${courseTitle}* at *AT Sensei Academy*, Bangalore (App Ref: *${regNo}*). We would love to assist you with batch schedules, syllabus blueprint, and upcoming demo sessions. When would be a good time to connect?`;
     return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
   };
 
@@ -196,11 +268,12 @@ export function AdminPortalPage() {
   const getWorkshopWhatsAppLink = (wk) => {
     const rawPhone = (wk.phone || '').replace(/\D/g, '');
     const phone = rawPhone.startsWith('91') ? rawPhone : `91${rawPhone}`;
-    const text = `Hi ${wk.attendeeName || 'there'}! 👋 Thank you for registering for the *100% Free Career Awareness & Strategy Workshop* at *AT Sensei Academy*, Bangalore. We have confirmed your pass! Would you like us to share the session timetable and preparation guide on WhatsApp?`;
+    const regNo = formatWorkshopRegNo(wk.id);
+    const text = `Hi ${wk.attendeeName || 'there'}! 👋 Thank you for registering for the *100% Free Career Awareness & Strategy Workshop* at *AT Sensei Academy*, Bangalore (Pass Ref: *${regNo}*). We have confirmed your pass! Would you like us to share the session timetable and preparation guide on WhatsApp?`;
     return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
   };
 
-  // Announcement Actions
+  // Announcement Actions — update state immediately
   const handleCreateAnnouncement = async (e) => {
     e.preventDefault();
     if (!newAnnouncement.text.trim()) {
@@ -208,18 +281,19 @@ export function AdminPortalPage() {
       return;
     }
     try {
-      await AdminService.createAnnouncement(newAnnouncement);
-      showSuccess('New announcement published to live marquee ticker!');
+      const created = await AdminService.createAnnouncement(newAnnouncement);
+      const itemToAdd = created || { ...newAnnouncement, id: Date.now() };
+      setAnnouncements(prev => [itemToAdd, ...prev]);
       setNewAnnouncement({
         icon: '📢',
         category: 'Upcoming Batch',
         text: '',
         actionLink: '/admissions',
         actionText: 'Reserve Seat',
-        displayOrder: announcements.length + 1,
+        displayOrder: 1,
         active: true
       });
-      loadAnnouncements();
+      showSuccess('New announcement published to live ticker immediately!');
     } catch (err) {
       showError('Failed to create announcement: ' + err.message);
     }
@@ -228,8 +302,8 @@ export function AdminPortalPage() {
   const handleToggleAnnouncement = async (id) => {
     try {
       await AdminService.toggleAnnouncement(id);
-      showSuccess('Announcement status toggled');
       setAnnouncements(prev => prev.map(a => a.id === id ? { ...a, active: !a.active } : a));
+      showSuccess('Announcement status toggled immediately');
     } catch (err) {
       showError('Failed to toggle announcement: ' + err.message);
     }
@@ -240,9 +314,9 @@ export function AdminPortalPage() {
     if (!editingAnnouncement) return;
     try {
       await AdminService.updateAnnouncement(editingAnnouncement.id, editingAnnouncement);
-      showSuccess('Announcement updated successfully!');
+      setAnnouncements(prev => prev.map(a => a.id === editingAnnouncement.id ? { ...editingAnnouncement } : a));
       setEditingAnnouncement(null);
-      loadAnnouncements();
+      showSuccess('Announcement updated immediately!');
     } catch (err) {
       showError('Failed to update announcement: ' + err.message);
     }
@@ -252,14 +326,14 @@ export function AdminPortalPage() {
     if (!window.confirm('Are you sure you want to delete this announcement?')) return;
     try {
       await AdminService.deleteAnnouncement(id);
-      showSuccess('Announcement deleted');
       setAnnouncements(prev => prev.filter(a => a.id !== id));
+      showSuccess('Announcement deleted');
     } catch (err) {
       showError('Failed to delete announcement: ' + err.message);
     }
   };
 
-  // Program Fee Updater
+  // Program Fee Updater — updates state immediately without reload
   const handleSaveProgramFee = async (e) => {
     e.preventDefault();
     if (!editingProgram) return;
@@ -270,11 +344,56 @@ export function AdminPortalPage() {
         validity: editingProgram.validity,
         timings: editingProgram.timings
       });
-      showSuccess(`Fee structure updated for ${editingProgram.title}!`);
+      setPrograms(prev => prev.map(p => p.code === editingProgram.code ? { ...p, ...editingProgram } : p));
       setEditingProgram(null);
-      loadPrograms();
+      showSuccess(`Fee structure updated immediately for ${editingProgram.title}!`);
     } catch (err) {
       showError('Failed to update fee: ' + err.message);
+    }
+  };
+
+  // Create New Program / Fee Structure
+  const handleCreateProgram = async (e) => {
+    e.preventDefault();
+    if (!newProgram.title.trim() || !newProgram.feeDisplay.trim()) {
+      showError('Course Title and Tuition Fee Display are required');
+      return;
+    }
+    try {
+      const code = newProgram.code.trim() || newProgram.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      const payload = { ...newProgram, code };
+      const created = await AdminService.createProgram(payload);
+      const savedProgram = created || payload;
+      setPrograms(prev => [...prev, savedProgram]);
+      setIsAddProgramOpen(false);
+      setNewProgram({
+        title: '',
+        code: '',
+        category: 'banking',
+        tag: 'Flagship Track',
+        feeDisplay: '₹',
+        feeSubtext: 'Inclusive of GST & Practice Materials',
+        validity: '2 Years Unlimited',
+        timings: 'Daily 10:00 AM – 1:00 PM & 6:30 PM – 8:30 PM',
+        batches: 'Morning & Evening Batches',
+        eligibility: 'Graduates & Final Year Students',
+        description: ''
+      });
+      showSuccess(`New Course Program "${savedProgram.title}" created successfully!`);
+    } catch (err) {
+      showError('Failed to create program: ' + err.message);
+    }
+  };
+
+  // Delete Program
+  const handleDeleteProgram = async (code, title) => {
+    if (!window.confirm(`Are you sure you want to delete course "${title}"?`)) return;
+    try {
+      await AdminService.deleteProgram(code);
+      setPrograms(prev => prev.filter(p => p.code !== code));
+      showSuccess(`Program "${title}" deleted`);
+    } catch (err) {
+      showError('Failed to delete program: ' + err.message);
     }
   };
 
@@ -284,7 +403,8 @@ export function AdminPortalPage() {
       (enq.studentName && enq.studentName.toLowerCase().includes(searchQuery.toLowerCase())) ||
       (enq.phone && enq.phone.includes(searchQuery)) ||
       (enq.email && enq.email.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (enq.locality && enq.locality.toLowerCase().includes(searchQuery.toLowerCase()));
+      (enq.locality && enq.locality.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      formatEnquiryRegNo(enq.id).toLowerCase().includes(searchQuery.toLowerCase());
 
     const matchesStatus = statusFilter === 'ALL' || enq.status === statusFilter;
     const matchesCourse = courseFilter === 'ALL' || (enq.courseCode && enq.courseCode.toLowerCase() === courseFilter.toLowerCase());
@@ -299,7 +419,8 @@ export function AdminPortalPage() {
       (wk.attendeeName && wk.attendeeName.toLowerCase().includes(q)) ||
       (wk.phone && wk.phone.includes(q)) ||
       (wk.institutionName && wk.institutionName.toLowerCase().includes(q)) ||
-      (wk.bookingType && wk.bookingType.toLowerCase().includes(q))
+      (wk.bookingType && wk.bookingType.toLowerCase().includes(q)) ||
+      formatWorkshopRegNo(wk.id).toLowerCase().includes(q)
     );
   });
 
@@ -309,9 +430,9 @@ export function AdminPortalPage() {
       showError('No enquiries to export');
       return;
     }
-    const headers = ['ID', 'Date', 'Student Name', 'Phone', 'Email', 'Course', 'Batch', 'Locality', 'Status', 'Parent Name', 'Parent Phone', 'Notes'];
+    const headers = ['Registration No', 'Date', 'Student Name', 'Phone', 'Email', 'Course', 'Batch', 'Locality', 'Status', 'Parent Name', 'Parent Phone', 'Notes'];
     const rows = filteredEnquiries.map(e => [
-      e.id,
+      `"${formatEnquiryRegNo(e.id)}"`,
       e.createdAt ? new Date(e.createdAt).toLocaleString() : '',
       `"${e.studentName || ''}"`,
       `"${e.phone || ''}"`,
@@ -342,9 +463,9 @@ export function AdminPortalPage() {
       showError('No workshop bookings to export');
       return;
     }
-    const headers = ['ID', 'Date', 'Attendee Name', 'Phone', 'Booking Type', 'Institution Name', 'Expected Count'];
+    const headers = ['Pass Reference No', 'Date', 'Attendee Name', 'Phone', 'Booking Type', 'Institution Name', 'Expected Count'];
     const rows = filteredWorkshops.map(w => [
-      w.id,
+      `"${formatWorkshopRegNo(w.id)}"`,
       w.createdAt ? new Date(w.createdAt).toLocaleString() : '',
       `"${w.attendeeName || ''}"`,
       `"${w.phone || ''}"`,
@@ -482,7 +603,7 @@ export function AdminPortalPage() {
             className={`admin-tab-btn ${activeTab === 'fees' ? 'active' : ''}`}
             onClick={() => setActiveTab('fees')}
           >
-            💰 Course Fees & Schedules
+            💰 Course Fees & Schedules ({programs.length})
           </button>
           <button
             type="button"
@@ -521,7 +642,7 @@ export function AdminPortalPage() {
               <div className="toolbar-search">
                 <input
                   type="text"
-                  placeholder="🔍 Search student name, phone, locality, email..."
+                  placeholder="🔍 Search student name, phone, locality, Reg No (e.g. ATS-ENQ)..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="admin-search-input"
@@ -574,6 +695,52 @@ export function AdminPortalPage() {
               </div>
             </div>
 
+            {/* Bulk Actions Floating Bar */}
+            {selectedEnquiryIds.length > 0 && (
+              <div className="admin-bulk-bar glass-card">
+                <div className="bulk-count-badge">
+                  ☑️ <strong>{selectedEnquiryIds.length}</strong> enquiries selected
+                </div>
+                <div className="bulk-actions-group">
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-outline"
+                    onClick={() => handleBulkStatusChange('CONTACTED')}
+                  >
+                    Mark Contacted
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-outline"
+                    onClick={() => handleBulkStatusChange('COUNSELED')}
+                  >
+                    Mark Counseled
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-outline"
+                    onClick={() => handleBulkStatusChange('ENROLLED')}
+                  >
+                    Mark Enrolled
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-admin-danger"
+                    onClick={handleBulkDelete}
+                  >
+                    🗑️ Delete Selected ({selectedEnquiryIds.length})
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-outline"
+                    onClick={() => setSelectedEnquiryIds([])}
+                  >
+                    ✕ Clear
+                  </button>
+                </div>
+              </div>
+            )}
+
             {/* Enquiries Table */}
             {enquiriesLoading ? (
               <div className="admin-loading-state glass-card">
@@ -590,7 +757,15 @@ export function AdminPortalPage() {
                 <table className="admin-table">
                   <thead>
                     <tr>
-                      <th>Ref / Date</th>
+                      <th style={{ width: '40px' }}>
+                        <input
+                          type="checkbox"
+                          checked={selectedEnquiryIds.length > 0 && selectedEnquiryIds.length === filteredEnquiries.length}
+                          onChange={handleSelectAllEnquiries}
+                          title="Select / Deselect all visible records"
+                        />
+                      </th>
+                      <th>Application / Reg No</th>
                       <th>Student Info</th>
                       <th>Course & Batch</th>
                       <th>Direct Contact Actions</th>
@@ -603,7 +778,21 @@ export function AdminPortalPage() {
                     {filteredEnquiries.map(enq => (
                       <tr key={enq.id} className={`status-row-${enq.status ? enq.status.toLowerCase() : 'new'}`}>
                         <td>
-                          <div className="enq-ref-badge">#ENQ-{enq.id}</div>
+                          <input
+                            type="checkbox"
+                            checked={selectedEnquiryIds.includes(enq.id)}
+                            onChange={() => handleToggleSelectEnquiry(enq.id)}
+                          />
+                        </td>
+                        <td>
+                          <div
+                            className="enq-ref-badge"
+                            onClick={() => copyToClipboard(formatEnquiryRegNo(enq.id), 'Registration ID')}
+                            title="Click to copy official Application ID"
+                            style={{ cursor: 'pointer' }}
+                          >
+                            📋 {formatEnquiryRegNo(enq.id)}
+                          </div>
                           <div className="enq-date">
                             {enq.createdAt ? new Date(enq.createdAt).toLocaleDateString('en-IN', {
                               month: 'short',
@@ -714,7 +903,7 @@ export function AdminPortalPage() {
               <div className="toolbar-search">
                 <input
                   type="text"
-                  placeholder="🔍 Search attendee name, phone, college/institution..."
+                  placeholder="🔍 Search attendee name, phone, Pass Ref (e.g. ATS-WK), college..."
                   value={workshopSearch}
                   onChange={(e) => setWorkshopSearch(e.target.value)}
                   className="admin-search-input"
@@ -754,7 +943,7 @@ export function AdminPortalPage() {
                 <table className="admin-table">
                   <thead>
                     <tr>
-                      <th>Ref / Date</th>
+                      <th>Workshop Pass Ref</th>
                       <th>Attendee / Contact</th>
                       <th>Type & Category</th>
                       <th>Institution / Group Size</th>
@@ -765,7 +954,14 @@ export function AdminPortalPage() {
                     {filteredWorkshops.map(wk => (
                       <tr key={wk.id}>
                         <td>
-                          <div className="enq-ref-badge">#WK-{wk.id}</div>
+                          <div
+                            className="enq-ref-badge"
+                            onClick={() => copyToClipboard(formatWorkshopRegNo(wk.id), 'Workshop Pass Reference')}
+                            title="Click to copy Pass Reference ID"
+                            style={{ cursor: 'pointer' }}
+                          >
+                            🎟️ {formatWorkshopRegNo(wk.id)}
+                          </div>
                           <div className="enq-date">
                             {wk.createdAt ? new Date(wk.createdAt).toLocaleDateString('en-IN', {
                               month: 'short',
@@ -952,19 +1148,28 @@ export function AdminPortalPage() {
         {/* TAB 4: COURSE FEES & SCHEDULES */}
         {activeTab === 'fees' && (
           <section className="admin-tab-pane">
-            <div className="admin-header-row">
+            <div className="admin-header-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 'var(--space-4)' }}>
               <div>
                 <h2>Program Fee Structures & Batch Timings</h2>
-                <p>Edit course tuition fees, validity terms, and batch timings in real time.</p>
+                <p>Create new course offerings, edit tuition fees, validity terms, and batch timings in real time.</p>
               </div>
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={loadPrograms}
-                disabled={programsLoading}
-              >
-                🔄 Reload Programs
-              </button>
+              <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => setIsAddProgramOpen(true)}
+                >
+                  ➕ Add New Course Fee
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-outline"
+                  onClick={loadPrograms}
+                  disabled={programsLoading}
+                >
+                  🔄 Refresh
+                </button>
+              </div>
             </div>
 
             {programsLoading ? (
@@ -979,6 +1184,7 @@ export function AdminPortalPage() {
                     </div>
 
                     <h3 className="prog-card-title">{prog.title}</h3>
+                    <div className="prog-code-sub">Code: <code>{prog.code}</code></div>
                     <div className="prog-fee-amount">{prog.feeDisplay}</div>
                     <div className="prog-fee-sub">{prog.feeSubtext}</div>
 
@@ -986,13 +1192,24 @@ export function AdminPortalPage() {
                       <strong>🕒 Schedule:</strong> {prog.timings}
                     </div>
 
-                    <button
-                      type="button"
-                      className="btn btn-outline btn-block btn-edit-fee"
-                      onClick={() => setEditingProgram({ ...prog })}
-                    >
-                      ✏️ Edit Fee & Schedule
-                    </button>
+                    <div style={{ display: 'flex', gap: 'var(--space-2)', marginTop: 'auto' }}>
+                      <button
+                        type="button"
+                        className="btn btn-outline btn-block btn-edit-fee"
+                        onClick={() => setEditingProgram({ ...prog })}
+                      >
+                        ✏️ Edit Fee & Schedule
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-admin-danger"
+                        onClick={() => handleDeleteProgram(prog.code, prog.title)}
+                        title="Delete course"
+                        style={{ padding: '0 12px' }}
+                      >
+                        🗑️
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -1028,6 +1245,7 @@ export function AdminPortalPage() {
                 <h3>🛡️ DPDP & Child Safety Protocols</h3>
                 <p>All student phone numbers, email addresses, and minor consent records follow DPDP data minimization rules.</p>
                 <ul className="safety-checklist">
+                  <li>✅ Unique Reference Number assigned to every registration.</li>
                   <li>✅ Parent consent verification mandatory for School Foundation.</li>
                   <li>✅ Zero raw payment credential storage (Hosted tokenized flow).</li>
                   <li>✅ Structured audit trail on enquiry status transitions.</li>
@@ -1055,7 +1273,7 @@ export function AdminPortalPage() {
             </div>
             <div className="admin-modal-body">
               <div style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-3)' }}>
-                Target Track: <strong>{selectedEnquiryForNotes.courseCode}</strong> | Phone: <strong>{selectedEnquiryForNotes.phone}</strong>
+                Application: <strong>{formatEnquiryRegNo(selectedEnquiryForNotes.id)}</strong> | Track: <strong>{selectedEnquiryForNotes.courseCode}</strong> | Phone: <strong>{selectedEnquiryForNotes.phone}</strong>
               </div>
               <label>Counselor Observations & Follow-up Log:</label>
               <textarea
@@ -1198,7 +1416,7 @@ export function AdminPortalPage() {
                   <label>Fee Subtext (e.g. Including GST / Zero Hidden Fees)</label>
                   <input
                     type="text"
-                    value={editingProgram.feeSubtext}
+                    value={editingProgram.feeSubtext || ''}
                     onChange={(e) => setEditingProgram({ ...editingProgram, feeSubtext: e.target.value })}
                     className="admin-input-field"
                   />
@@ -1208,7 +1426,7 @@ export function AdminPortalPage() {
                   <label>Validity Duration</label>
                   <input
                     type="text"
-                    value={editingProgram.validity}
+                    value={editingProgram.validity || ''}
                     onChange={(e) => setEditingProgram({ ...editingProgram, validity: e.target.value })}
                     className="admin-input-field"
                     required
@@ -1219,7 +1437,7 @@ export function AdminPortalPage() {
                   <label>Batch Schedule & Timings</label>
                   <input
                     type="text"
-                    value={editingProgram.timings}
+                    value={editingProgram.timings || ''}
                     onChange={(e) => setEditingProgram({ ...editingProgram, timings: e.target.value })}
                     className="admin-input-field"
                     required
@@ -1240,6 +1458,128 @@ export function AdminPortalPage() {
                   className="btn btn-primary"
                 >
                   💾 Save Fee Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Add New Program Modal */}
+      {isAddProgramOpen && (
+        <div className="admin-modal-overlay" onClick={() => setIsAddProgramOpen(false)}>
+          <div className="admin-modal-box glass-card" onClick={(e) => e.stopPropagation()}>
+            <div className="admin-modal-header">
+              <h3>➕ Add New Course & Fee Structure</h3>
+              <button
+                type="button"
+                className="admin-modal-close"
+                onClick={() => setIsAddProgramOpen(false)}
+              >
+                ✕
+              </button>
+            </div>
+            <form onSubmit={handleCreateProgram}>
+              <div className="admin-modal-body">
+                <div className="form-group">
+                  <label>Course Title *</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. RBI Grade B & NABARD Comprehensive"
+                    value={newProgram.title}
+                    onChange={(e) => setNewProgram({ ...newProgram, title: e.target.value })}
+                    className="admin-input-field"
+                    required
+                  />
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)' }}>
+                  <div className="form-group">
+                    <label>Category</label>
+                    <select
+                      value={newProgram.category}
+                      onChange={(e) => setNewProgram({ ...newProgram, category: e.target.value })}
+                      className="admin-input-field"
+                    >
+                      <option value="banking">Banking</option>
+                      <option value="ssc">SSC</option>
+                      <option value="combo">Combo</option>
+                      <option value="foundation">Foundation</option>
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label>Unique Code (slug)</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. rbi-grade-b"
+                      value={newProgram.code}
+                      onChange={(e) => setNewProgram({ ...newProgram, code: e.target.value })}
+                      className="admin-input-field"
+                    />
+                  </div>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)' }}>
+                  <div className="form-group">
+                    <label>Tuition Fee Display *</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. ₹18,999"
+                      value={newProgram.feeDisplay}
+                      onChange={(e) => setNewProgram({ ...newProgram, feeDisplay: e.target.value })}
+                      className="admin-input-field"
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Validity Duration</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. 2 Years Access"
+                      value={newProgram.validity}
+                      onChange={(e) => setNewProgram({ ...newProgram, validity: e.target.value })}
+                      className="admin-input-field"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label>Fee Subtext</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Inclusive of GST, Test Series & Study Notes"
+                    value={newProgram.feeSubtext}
+                    onChange={(e) => setNewProgram({ ...newProgram, feeSubtext: e.target.value })}
+                    className="admin-input-field"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Batch Schedule & Timings</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Daily 10:00 AM – 1:00 PM & 6:30 PM – 8:30 PM"
+                    value={newProgram.timings}
+                    onChange={(e) => setNewProgram({ ...newProgram, timings: e.target.value })}
+                    className="admin-input-field"
+                  />
+                </div>
+              </div>
+
+              <div className="admin-modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-outline"
+                  onClick={() => setIsAddProgramOpen(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                >
+                  🚀 Create Course & Publish
                 </button>
               </div>
             </form>

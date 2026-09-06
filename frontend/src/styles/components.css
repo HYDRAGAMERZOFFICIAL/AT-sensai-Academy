@@ -2833,6 +2833,56 @@
   opacity: 1;
 }
 
+/* Bulk Actions Bar */
+.admin-bulk-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-5);
+  background: #eff6ff;
+  border: 1.5px solid #3b82f6;
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-4);
+  animation: slideDown 0.2s ease-out;
+}
+
+.bulk-count-badge {
+  font-size: 0.88rem;
+  color: #1e3a8a;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bulk-actions-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border-radius: 9999px;
+}
+
+.prog-code-sub {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-2);
+}
+
+.prog-code-sub code {
+  background: rgba(7, 26, 77, 0.06);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--color-primary-navy);
+}
+
 /* Responsive Table & Admin Controls */
 @media (max-width: 768px) {
   .admin-topbar-inner {

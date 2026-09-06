@@ -29,6 +29,7 @@ com\atsensei\academy\modules\workshop\WorkshopController.class
 com\atsensei\academy\modules\workshop\WorkshopRepository.class
 com\atsensei\academy\modules\program\ProgramController.class
 com\atsensei\academy\modules\program\ProgramRepository.class
+com\atsensei\academy\modules\enquiry\BulkEnquiryActionDTO.class
 com\atsensei\academy\modules\mentor\MentorService.class
 com\atsensei\academy\config\CorsConfig.class
 com\atsensei\academy\modules\policy\PolicyRepository.class

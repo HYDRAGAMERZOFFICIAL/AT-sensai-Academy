@@ -8,6 +8,7 @@ C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\announce
 C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\announcement\AnnouncementService.java
 C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\auth\AdminAuthController.java
 C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\auth\AdminAuthRequestDTO.java
+C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\enquiry\BulkEnquiryActionDTO.java
 C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\enquiry\EnquiryController.java
 C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\enquiry\EnquiryEntity.java
 C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\enquiry\EnquiryRepository.java

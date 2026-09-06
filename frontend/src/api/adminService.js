@@ -37,6 +37,22 @@ export const AdminService = {
     return res.data;
   },
 
+  async bulkDeleteEnquiries(ids) {
+    const res = await request('/enquiries/bulk-delete', {
+      method: 'POST',
+      body: { ids }
+    });
+    return res.data;
+  },
+
+  async bulkUpdateEnquiryStatus(ids, status) {
+    const res = await request('/enquiries/bulk-status', {
+      method: 'POST',
+      body: { ids, status }
+    });
+    return res.data;
+  },
+
   // Announcements
   async getAnnouncements(all = true) {
     const res = await request(`/announcements?all=${all}`);
@@ -79,10 +95,25 @@ export const AdminService = {
     return res.data || [];
   },
 
+  async createProgram(programData) {
+    const res = await request('/programs', {
+      method: 'POST',
+      body: programData
+    });
+    return res.data;
+  },
+
   async updateProgramFee(code, { feeDisplay, feeSubtext, validity, timings }) {
     const res = await request(`/programs/${code}/fee`, {
       method: 'PATCH',
       body: { feeDisplay, feeSubtext, validity, timings }
+    });
+    return res.data;
+  },
+
+  async deleteProgram(code) {
+    const res = await request(`/programs/${code}`, {
+      method: 'DELETE'
     });
     return res.data;
   }

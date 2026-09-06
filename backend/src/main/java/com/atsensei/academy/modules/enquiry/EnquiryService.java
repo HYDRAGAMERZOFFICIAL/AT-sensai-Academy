@@ -79,4 +79,37 @@ public class EnquiryService {
         }
         return false;
     }
+
+    public int bulkDeleteEnquiries(List<Long> ids) {
+        if (ids == null || ids.isEmpty()) return 0;
+        int count = 0;
+        for (Long id : ids) {
+            if (enquiryRepository.existsById(id)) {
+                enquiryRepository.deleteById(id);
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public int bulkUpdateStatus(List<Long> ids, String newStatus) {
+        if (ids == null || ids.isEmpty() || newStatus == null || newStatus.isBlank()) return 0;
+        int count = 0;
+        String statusFormatted = newStatus.toUpperCase().trim();
+        for (Long id : ids) {
+            Optional<EnquiryEntity> opt = enquiryRepository.findById(id);
+            if (opt.isPresent()) {
+                EnquiryEntity e = opt.get();
+                e.setStatus(statusFormatted);
+                if ("CONTACTED".equalsIgnoreCase(statusFormatted) || "COUNSELED".equalsIgnoreCase(statusFormatted) || "ENROLLED".equalsIgnoreCase(statusFormatted)) {
+                    if (e.getContactedAt() == null) {
+                        e.setContactedAt(LocalDateTime.now());
+                    }
+                }
+                enquiryRepository.save(e);
+                count++;
+            }
+        }
+        return count;
+    }
 }
