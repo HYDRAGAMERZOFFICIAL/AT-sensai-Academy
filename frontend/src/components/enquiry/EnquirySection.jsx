@@ -86,30 +86,24 @@ export function EnquirySection() {
 
           {/* Right Column: Embedded Google Form */}
           <div className="form-card glass-card" style={{ padding: 'var(--space-4)', borderRadius: 'var(--radius-xl)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-3)', paddingBottom: 'var(--space-3)', borderBottom: '1px solid var(--color-border-subtle)' }}>
-              <div>
-                <h3 style={{ margin: 0, fontSize: '1.15rem' }}>Course Admission Enquiry</h3>
-                <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>Official Google Registration Form</p>
-              </div>
-              <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
-                <button
-                  type="button"
-                  className="btn btn-sm btn-gold"
-                  onClick={() => openEnquiryModal()}
-                  style={{ fontSize: '0.8rem' }}
-                >
-                  Popup Form ↗
-                </button>
-                <a
-                  href={googleFormUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-sm btn-outline"
-                  style={{ fontSize: '0.8rem' }}
-                >
-                  Fullscreen ↗
-                </a>
-              </div>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 'var(--space-3)', paddingBottom: 'var(--space-3)', borderBottom: '1px solid var(--color-border-subtle)', gap: 'var(--space-2)' }}>
+              <button
+                type="button"
+                className="btn btn-sm btn-gold"
+                onClick={() => openEnquiryModal()}
+                style={{ fontSize: '0.8rem' }}
+              >
+                Popup Form ↗
+              </button>
+              <a
+                href={googleFormUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-sm btn-outline"
+                style={{ fontSize: '0.8rem' }}
+              >
+                Fullscreen ↗
+              </a>
             </div>
 
             <div style={{ minHeight: '680px', position: 'relative', background: '#fff', borderRadius: 'var(--radius-md)', overflow: 'hidden' }}>
