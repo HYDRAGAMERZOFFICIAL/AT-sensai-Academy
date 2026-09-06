@@ -87,13 +87,21 @@ export function SenseiChatbot() {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
 
-  // Auto popup AI Assistant immediately on website visit
+  // Auto popup AI Assistant on website visit (unless dismissed in session)
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsOpen(true);
-    }, 700);
-    return () => clearTimeout(timer);
+    const isDismissed = sessionStorage.getItem('sensei_chat_dismissed');
+    if (!isDismissed) {
+      const timer = setTimeout(() => {
+        setIsOpen(true);
+      }, 700);
+      return () => clearTimeout(timer);
+    }
   }, []);
+
+  const handleClose = () => {
+    setIsOpen(false);
+    sessionStorage.setItem('sensei_chat_dismissed', 'true');
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -253,8 +261,9 @@ export function SenseiChatbot() {
               <button
                 type="button"
                 className="chatbot-action-icon"
-                onClick={() => setIsOpen(false)}
-                title="Minimize Chat"
+                onClick={handleClose}
+                title="Close Chat"
+                aria-label="Close Sensei AI Chat"
               >
                 ✕
               </button>

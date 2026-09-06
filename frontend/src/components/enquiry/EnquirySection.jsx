@@ -15,20 +15,20 @@ export function EnquirySection() {
         </div>
 
         <div style={{ maxWidth: '920px', margin: '0 auto' }}>
-          <div className="glass-card" style={{ background: 'var(--color-primary-navy)', color: '#fff', padding: 'var(--space-8) var(--space-10)', borderRadius: 'var(--radius-2xl)', boxShadow: 'var(--shadow-xl)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 'var(--space-4)', marginBottom: 'var(--space-6)', borderBottom: '1px solid rgba(255, 255, 255, 0.12)', paddingBottom: 'var(--space-5)' }}>
+          <div className="glass-card enquiry-highlight-card">
+            <div className="enquiry-header-flex">
               <div>
                 <span className="badge badge-gold" style={{ marginBottom: 'var(--space-2)' }}>
                   Why AT Sensei Academy
                 </span>
-                <h3 style={{ color: '#fff', fontSize: '1.5rem', margin: 0 }}>
+                <h3 style={{ color: '#fff', fontSize: 'clamp(1.2rem, 3vw, 1.5rem)', margin: 0 }}>
                   Structured Mentorship for Exam Clearance
                 </h3>
               </div>
-              <div style={{ display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap' }}>
+              <div className="enquiry-btn-group">
                 <button
                   type="button"
-                  className="btn btn-gold btn-lg"
+                  className="btn btn-gold btn-lg btn-mobile-block"
                   onClick={() => openEnquiryModal()}
                   style={{ fontWeight: 800 }}
                 >
@@ -38,7 +38,7 @@ export function EnquirySection() {
                   href={googleFormUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn btn-outline btn-lg"
+                  className="btn btn-outline btn-lg btn-mobile-block"
                   style={{ color: '#fff', borderColor: 'rgba(255,255,255,0.4)' }}
                 >
                   ↗ Open in Full Window
@@ -47,11 +47,11 @@ export function EnquirySection() {
             </div>
 
             {/* Value Highlights Grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 'var(--space-6)', marginBottom: 'var(--space-8)' }}>
-              <div style={{ display: 'flex', gap: 'var(--space-3)' }}>
-                <span style={{ color: 'var(--color-accent-gold)', fontSize: '1.25rem', fontWeight: 800 }}>✓</span>
+            <div className="enquiry-value-grid">
+              <div className="enquiry-value-item">
+                <span className="enquiry-check">✓</span>
                 <div>
-                  <strong style={{ color: '#fff', fontSize: '1.05rem', display: 'block', marginBottom: '2px' }}>
+                  <strong style={{ color: '#fff', fontSize: '1rem', display: 'block', marginBottom: '2px' }}>
                     3-Year Extended Course Validity
                   </strong>
                   <p style={{ fontSize: '0.88rem', color: 'var(--color-text-inverse-muted)', margin: 0 }}>
@@ -60,10 +60,10 @@ export function EnquirySection() {
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: 'var(--space-3)' }}>
-                <span style={{ color: 'var(--color-accent-gold)', fontSize: '1.25rem', fontWeight: 800 }}>✓</span>
+              <div className="enquiry-value-item">
+                <span className="enquiry-check">✓</span>
                 <div>
-                  <strong style={{ color: '#fff', fontSize: '1.05rem', display: 'block', marginBottom: '2px' }}>
+                  <strong style={{ color: '#fff', fontSize: '1rem', display: 'block', marginBottom: '2px' }}>
                     100% Transparent Fees (GST Included)
                   </strong>
                   <p style={{ fontSize: '0.88rem', color: 'var(--color-text-inverse-muted)', margin: 0 }}>
@@ -72,10 +72,10 @@ export function EnquirySection() {
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: 'var(--space-3)' }}>
-                <span style={{ color: 'var(--color-accent-gold)', fontSize: '1.25rem', fontWeight: 800 }}>✓</span>
+              <div className="enquiry-value-item">
+                <span className="enquiry-check">✓</span>
                 <div>
-                  <strong style={{ color: '#fff', fontSize: '1.05rem', display: 'block', marginBottom: '2px' }}>
+                  <strong style={{ color: '#fff', fontSize: '1rem', display: 'block', marginBottom: '2px' }}>
                     Daily CBT Test Practice Lab
                   </strong>
                   <p style={{ fontSize: '0.88rem', color: 'var(--color-text-inverse-muted)', margin: 0 }}>
@@ -84,10 +84,10 @@ export function EnquirySection() {
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: 'var(--space-3)' }}>
-                <span style={{ color: 'var(--color-accent-gold)', fontSize: '1.25rem', fontWeight: 800 }}>✓</span>
+              <div className="enquiry-value-item">
+                <span className="enquiry-check">✓</span>
                 <div>
-                  <strong style={{ color: '#fff', fontSize: '1.05rem', display: 'block', marginBottom: '2px' }}>
+                  <strong style={{ color: '#fff', fontSize: '1rem', display: 'block', marginBottom: '2px' }}>
                     Direct Parent Progress Reporting
                   </strong>
                   <p style={{ fontSize: '0.88rem', color: 'var(--color-text-inverse-muted)', margin: 0 }}>
@@ -98,8 +98,8 @@ export function EnquirySection() {
             </div>
 
             {/* Bottom Contact & Action Bar */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 'var(--space-4)', padding: 'var(--space-4) var(--space-6)', background: 'rgba(255,255,255,0.08)', borderRadius: 'var(--radius-lg)' }}>
-              <div style={{ display: 'flex', gap: 'var(--space-6)', flexWrap: 'wrap', fontSize: '0.9rem' }}>
+            <div className="enquiry-bottom-bar">
+              <div className="enquiry-contact-links">
                 <div>📞 <strong>Direct Hotline:</strong> <a href="tel:+919110687171" style={{ color: 'var(--color-accent-gold)', textDecoration: 'none' }}>+91 91106 87171</a></div>
                 <div>📍 <strong>Campus:</strong> Abbigere Main Rd, Kammagondanahalli, Bangalore – 560015</div>
               </div>
@@ -108,7 +108,7 @@ export function EnquirySection() {
                 href="https://wa.me/919110687171?text=Hello%20AT%20Sensei%20Academy%2C%20I%20would%20like%20to%20enquire%20about%20admissions"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-sm btn-whatsapp-confirm"
+                className="btn btn-sm btn-whatsapp-confirm btn-mobile-block"
                 style={{ fontSize: '0.85rem' }}
               >
                 💬 Chat on WhatsApp

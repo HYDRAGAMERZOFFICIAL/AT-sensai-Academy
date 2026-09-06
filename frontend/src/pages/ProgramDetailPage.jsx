@@ -73,7 +73,7 @@ export function ProgramDetailPage() {
           <Link to="/">Home</Link> &gt; <Link to="/programs">Programs</Link> &gt; <span style={{ color: 'var(--color-primary-navy)', fontWeight: 600 }}>{program.title}</span>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 0.8fr', gap: 'var(--space-10)' }}>
+        <div className="program-detail-grid">
           {/* Main Content */}
           <div>
             <div style={{ display: 'flex', gap: 'var(--space-2)', marginBottom: 'var(--space-3)' }}>
