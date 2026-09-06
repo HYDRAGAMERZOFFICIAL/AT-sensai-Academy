@@ -72,6 +72,12 @@ public class EnquiryRequestDTO {
     }
     public void setParentPhone(String parentPhone) { this.parentPhone = parentPhone; }
 
+    @JsonAlias({"location", "city", "area"})
+    private String locality;
+
     public Boolean getParentConsentGiven() { return parentConsentGiven != null && parentConsentGiven; }
     public void setParentConsentGiven(Boolean parentConsentGiven) { this.parentConsentGiven = parentConsentGiven; }
+
+    public String getLocality() { return locality; }
+    public void setLocality(String locality) { this.locality = locality; }
 }

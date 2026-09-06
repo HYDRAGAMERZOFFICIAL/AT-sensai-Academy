@@ -407,11 +407,13 @@ img, svg {
 }
 
 .brand-logo-img {
+  width: 46px;
   height: 46px;
-  width: auto;
-  max-width: 140px;
-  object-fit: contain;
-  border-radius: var(--radius-xs);
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid rgba(7, 26, 77, 0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  display: block;
 }
 
 .brand-icon-fallback {

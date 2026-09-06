@@ -8,7 +8,7 @@ export function Footer() {
         <div className="footer-grid">
           <div className="footer-brand">
             <div className="brand-logo" style={{ marginBottom: 'var(--space-3)' }}>
-              <div className="brand-icon">AT</div>
+              <img src="/logo.png" alt="AT Sensei Logo" className="brand-logo-img" style={{ width: '44px', height: '44px', borderRadius: '50%', objectFit: 'cover' }} />
               <div className="brand-text">
                 <span className="brand-title" style={{ color: '#fff' }}>AT <span className="red-accent">Sensei</span> Academy</span>
                 <span className="brand-tagline" style={{ color: 'var(--color-accent-gold)' }}>Learn Today, Lead Tomorrow</span>
@@ -75,6 +75,9 @@ export function Footer() {
             </Link>
             <Link to="/policies?tab=disclaimer" style={{ color: 'var(--color-text-inverse-muted)', textDecoration: 'underline' }}>
               Disclaimer
+            </Link>
+            <Link to="/admin-portal" style={{ color: 'var(--color-accent-gold)', fontWeight: '600', marginLeft: 'var(--space-2)' }} title="Academy Staff Portal">
+              🔒 Staff Portal
             </Link>
           </div>
         </div>

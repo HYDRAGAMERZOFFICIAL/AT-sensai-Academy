@@ -2,6 +2,11 @@ C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\AtSenseiAcademyA
 C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\common\ApiResponse.java
 C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\common\GlobalExceptionHandler.java
 C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\config\CorsConfig.java
+C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\announcement\AnnouncementController.java
+C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\announcement\AnnouncementEntity.java
+C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\announcement\AnnouncementRepository.java
+C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\announcement\AnnouncementService.java
+C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\auth\AdminAuthController.java
 C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\enquiry\EnquiryController.java
 C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\enquiry\EnquiryEntity.java
 C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\enquiry\EnquiryRepository.java

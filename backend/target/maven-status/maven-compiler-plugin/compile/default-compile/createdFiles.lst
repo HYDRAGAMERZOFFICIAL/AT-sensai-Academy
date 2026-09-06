@@ -10,12 +10,10 @@ com\atsensei\academy\modules\mentor\MentorEntity.class
 com\atsensei\academy\modules\workshop\WorkshopService.class
 com\atsensei\academy\common\ApiResponse.class
 com\atsensei\academy\modules\workshop\WorkshopBookingEntity.class
-com\atsensei\academy\modules\enquiry\EnquiryRequestDTO.class
 com\atsensei\academy\modules\mentor\MentorController.class
 com\atsensei\academy\modules\enquiry\EnquiryRepository.class
 com\atsensei\academy\common\GlobalExceptionHandler.class
 com\atsensei\academy\modules\program\ProgramService.class
-com\atsensei\academy\modules\enquiry\EnquiryService.class
 com\atsensei\academy\modules\program\ProgramEntity.class
 com\atsensei\academy\modules\workshop\WorkshopController.class
 com\atsensei\academy\modules\workshop\WorkshopRepository.class

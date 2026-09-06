@@ -255,3 +255,38 @@ VALUES (
     <p>While every effort is made to maintain complete fidelity with current exam patterns, applicants are encouraged to cross-reference official recruitment notifications released by the respective recruiting authorities.</p>
   </div>'
 );
+
+-- Announcements Seed Data
+INSERT INTO announcements (icon, category, text, active, display_order, action_link, action_text)
+VALUES (
+  '📢',
+  'Upcoming Batch',
+  'Upcoming Batch: Banking & SSC Morning Batch starts Monday (10:00 AM – 12:00 PM)',
+  true,
+  1,
+  '/admissions',
+  'Reserve Seat'
+);
+
+INSERT INTO announcements (icon, category, text, active, display_order, action_link, action_text)
+VALUES (
+  '🎯',
+  'Foundation 2026/27',
+  'Foundation 2026/27: Evening Batch for 8th–10th (6:30 PM – 8:00 PM) Admissions Open',
+  true,
+  2,
+  '/admissions',
+  'Apply Now'
+);
+
+INSERT INTO announcements (icon, category, text, active, display_order, action_link, action_text)
+VALUES (
+  '🎓',
+  'Free Workshop',
+  'Free Workshop: 100% Free Career Awareness Workshop seats filling fast',
+  true,
+  3,
+  '/admissions',
+  'Reserve Seat'
+);
+

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import { PolicyService } from '../api/policyService';
 import { COMPREHENSIVE_POLICIES } from '../data/legalPolicies';
 
@@ -48,63 +48,85 @@ export function PoliciesPage() {
 
   return (
     <div className="page-policies" style={{ paddingTop: 'var(--space-12)', paddingBottom: 'var(--space-20)' }}>
-      <div className="container" style={{ maxWidth: '960px' }}>
-        <div style={{ textAlign: 'center', marginBottom: 'var(--space-8)' }}>
-          <span className="section-tag" style={{ marginBottom: 'var(--space-2)' }}>Institutional Governance</span>
-          <h1>Legal & Privacy Governance</h1>
-          <p style={{ color: 'var(--color-text-secondary)', maxWidth: '700px', margin: '0 auto' }}>
-            Transparent legal terms, DPDP compliance, student data safety, and zero-deception coaching standards for AT Sensei Academy.
-          </p>
+      <div className="container" style={{ maxWidth: '1020px' }}>
+        <div className="policies-header-masthead">
+          <img src="/logo.png" alt="AT Sensei Official Seal" className="policies-seal-logo" />
+          <div>
+            <span className="section-tag">Institutional Governance & Compliance</span>
+            <h1>Academic & Legal Policies</h1>
+            <p>
+              Digital Personal Data Protection (DPDP) Act alignment, student privacy, zero hidden fee disclosure, and minor protection charter.
+            </p>
+          </div>
         </div>
 
-        <div className="form-card" style={{ padding: 'var(--space-8)' }}>
-          <div className="policy-tabs" style={{ marginBottom: 'var(--space-8)' }}>
+        <div className="policies-container-card glass-card">
+          {/* Policy Selection Buttons */}
+          <div className="policy-tabs" role="tablist" aria-label="Legal Policy Navigation">
             <button
               type="button"
+              role="tab"
+              aria-selected={currentTab === 'privacy'}
               className={`policy-tab-btn ${currentTab === 'privacy' ? 'active' : ''}`}
               onClick={() => handleTabChange('privacy')}
             >
-              Privacy Policy (DPDP)
+              🔒 Privacy Policy (DPDP)
             </button>
             <button
               type="button"
+              role="tab"
+              aria-selected={currentTab === 'terms'}
               className={`policy-tab-btn ${currentTab === 'terms' ? 'active' : ''}`}
               onClick={() => handleTabChange('terms')}
             >
-              Terms & Conditions
+              📜 Terms & Conditions
             </button>
             <button
               type="button"
+              role="tab"
+              aria-selected={currentTab === 'refund'}
               className={`policy-tab-btn ${currentTab === 'refund' ? 'active' : ''}`}
               onClick={() => handleTabChange('refund')}
             >
-              Fee & Refund Policy
+              💳 Fee & Refund Policy
             </button>
             <button
               type="button"
+              role="tab"
+              aria-selected={currentTab === 'minorConsent'}
               className={`policy-tab-btn ${currentTab === 'minorConsent' ? 'active' : ''}`}
               onClick={() => handleTabChange('minorConsent')}
             >
-              Minor Protection & Consent
+              🛡️ Minor Protection & Consent
             </button>
             <button
               type="button"
+              role="tab"
+              aria-selected={currentTab === 'disclaimer'}
               className={`policy-tab-btn ${currentTab === 'disclaimer' ? 'active' : ''}`}
               onClick={() => handleTabChange('disclaimer')}
             >
-              Disclaimer & Standards
+              ⚖️ Disclaimer & Standards
             </button>
           </div>
 
-          <div>
-            <h2 style={{ fontSize: '1.75rem', marginBottom: 'var(--space-4)', color: 'var(--color-primary-navy)' }}>
-              {currentPolicy.title}
-            </h2>
+          <div className="policy-document-body">
+            <div className="policy-title-bar">
+              <h2>{currentPolicy.title}</h2>
+              <span className="policy-verified-badge">✓ Institutional Verification</span>
+            </div>
+
             <div
               dangerouslySetInnerHTML={{ __html: currentPolicy.contentHtml }}
               className="legal-content-container"
-              style={{ fontSize: '0.95rem', lineHeight: 1.8, color: 'var(--color-text-secondary)' }}
             />
+          </div>
+
+          <div className="policy-footer-bar">
+            <span>Questions regarding compliance or DPDP data requests?</span>
+            <Link to="/contact" className="btn btn-outline btn-sm">
+              Contact Compliance Desk →
+            </Link>
           </div>
         </div>
       </div>

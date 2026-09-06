@@ -24,8 +24,15 @@ public class EnquiryEntity {
 
     private String batchPreference;
 
+    private String locality;
+
     @Column(nullable = false, length = 20)
-    private String status = "PENDING";
+    private String status = "NEW";
+
+    @Column(length = 1000)
+    private String adminNotes;
+
+    private LocalDateTime contactedAt;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
@@ -56,8 +63,17 @@ public class EnquiryEntity {
     public String getBatchPreference() { return batchPreference; }
     public void setBatchPreference(String batchPreference) { this.batchPreference = batchPreference; }
 
+    public String getLocality() { return locality; }
+    public void setLocality(String locality) { this.locality = locality; }
+
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
+    public String getAdminNotes() { return adminNotes; }
+    public void setAdminNotes(String adminNotes) { this.adminNotes = adminNotes; }
+
+    public LocalDateTime getContactedAt() { return contactedAt; }
+    public void setContactedAt(LocalDateTime contactedAt) { this.contactedAt = contactedAt; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }

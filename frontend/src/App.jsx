@@ -19,6 +19,7 @@ import { AdmissionPage } from './pages/AdmissionPage';
 import { FAQPage } from './pages/FAQPage';
 import { ContactPage } from './pages/ContactPage';
 import { PoliciesPage } from './pages/PoliciesPage';
+import { AdminPortalPage } from './pages/AdminPortalPage';
 
 // Global Modals
 import { CurriculumModal } from './components/programs/CurriculumModal';
@@ -49,6 +50,9 @@ export function App() {
             <Route path="/faq" element={<FAQPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/policies" element={<PoliciesPage />} />
+            <Route path="/admin-portal" element={<AdminPortalPage />} />
+            <Route path="/admin" element={<AdminPortalPage />} />
+            <Route path="/sensei-admin" element={<AdminPortalPage />} />
           </Routes>
         </main>
 

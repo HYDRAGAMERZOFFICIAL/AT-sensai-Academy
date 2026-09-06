@@ -3,7 +3,9 @@ package com.atsensei.academy.modules.enquiry;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -22,7 +24,8 @@ public class EnquiryService {
         enquiry.setEmail(dto.getEmail());
         enquiry.setCourseCode(dto.getCourseCode());
         enquiry.setBatchPreference(dto.getBatchPreference() != null ? dto.getBatchPreference() : "Morning");
-        enquiry.setStatus("PENDING");
+        enquiry.setLocality(dto.getLocality());
+        enquiry.setStatus("NEW");
 
         // Minor Protection Check for Foundation Course
         if ("foundation".equalsIgnoreCase(dto.getCourseCode())) {
@@ -50,5 +53,30 @@ public class EnquiryService {
     @Transactional(readOnly = true)
     public List<EnquiryEntity> getAllEnquiries() {
         return enquiryRepository.findAll();
+    }
+
+    public Optional<EnquiryEntity> updateEnquiryStatus(Long id, String newStatus, String adminNotes) {
+        return enquiryRepository.findById(id).map(enquiry -> {
+            if (newStatus != null && !newStatus.isBlank()) {
+                enquiry.setStatus(newStatus.toUpperCase().trim());
+                if ("CONTACTED".equalsIgnoreCase(newStatus) || "COUNSELED".equalsIgnoreCase(newStatus) || "ENROLLED".equalsIgnoreCase(newStatus)) {
+                    if (enquiry.getContactedAt() == null) {
+                        enquiry.setContactedAt(LocalDateTime.now());
+                    }
+                }
+            }
+            if (adminNotes != null) {
+                enquiry.setAdminNotes(adminNotes.trim());
+            }
+            return enquiryRepository.save(enquiry);
+        });
+    }
+
+    public boolean deleteEnquiry(Long id) {
+        if (enquiryRepository.existsById(id)) {
+            enquiryRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }
