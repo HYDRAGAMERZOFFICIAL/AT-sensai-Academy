@@ -1,19 +1,29 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { formatFeeDisplay } from '../../utils/formatters';
+import { useModal } from '../../context/ModalContext';
 
 export function ProgramCard({ program, onEnrollClick }) {
+  const { openEnquiryModal } = useModal();
   const [isExpanded, setIsExpanded] = React.useState(false);
 
   const subjects = typeof program.subjectsJson === 'string'
     ? (() => { try { return JSON.parse(program.subjectsJson); } catch (e) { return []; } })()
-    : (program.subjectsJson || []);
+    : (program.subjectsJson || program.subjects || []);
 
   const exams = typeof program.examsJson === 'string'
     ? (() => { try { return JSON.parse(program.examsJson); } catch (e) { return []; } })()
-    : (program.examsJson || []);
+    : (program.examsJson || program.exams || []);
 
   const isCombo = program.code === 'ssc-banking-combo';
+
+  const handleEnquire = () => {
+    if (onEnrollClick) {
+      onEnrollClick(program.code);
+    } else {
+      openEnquiryModal({ course: program.code });
+    }
+  };
 
   return (
     <article className={`program-card glass-card ${isCombo ? 'featured-card' : ''}`}>
@@ -106,7 +116,7 @@ export function ProgramCard({ program, onEnrollClick }) {
         <button
           type="button"
           className="btn btn-primary btn-sm"
-          onClick={() => onEnrollClick(program.code)}
+          onClick={handleEnquire}
         >
           Enquire Now
         </button>
