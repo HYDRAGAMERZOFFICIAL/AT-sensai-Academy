@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useModal } from '../../context/ModalContext';
 
 export function ProgramCard({ program, onEnrollClick }) {
@@ -18,13 +19,17 @@ export function ProgramCard({ program, onEnrollClick }) {
   return (
     <article className={`program-card ${isFeatured}`} id={`card-${program.code}`}>
       {program.featured && <div className="program-card-ribbon">{program.tag}</div>}
-      
+
       <div style={{ marginBottom: 'var(--space-4)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-2)' }}>
           <span className={`badge ${badgeCategory}`}>{categoryName}</span>
           <span className="badge badge-navy">{program.validity} Validity</span>
         </div>
-        <h3 style={{ fontSize: 'var(--font-size-2xl)', marginBottom: 'var(--space-2)' }}>{program.title}</h3>
+        <h3 style={{ fontSize: 'var(--font-size-2xl)', marginBottom: 'var(--space-2)' }}>
+          <Link to={`/programs/${program.code}`} style={{ color: 'inherit' }}>
+            {program.title}
+          </Link>
+        </h3>
         <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-4)' }}>
           {program.description}
         </p>
@@ -64,13 +69,9 @@ export function ProgramCard({ program, onEnrollClick }) {
       </div>
 
       <div className="program-card-actions">
-        <button
-          type="button"
-          className="btn btn-outline"
-          onClick={() => openCurriculumModal(program)}
-        >
-          View Syllabus
-        </button>
+        <Link to={`/programs/${program.code}`} className="btn btn-outline">
+          Full Syllabus & Details
+        </Link>
         <button
           type="button"
           className="btn btn-primary"

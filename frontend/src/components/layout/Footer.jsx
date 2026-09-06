@@ -1,9 +1,7 @@
 import React from 'react';
-import { useModal } from '../../context/ModalContext';
+import { Link } from 'react-router-dom';
 
 export function Footer() {
-  const { openPolicyModal } = useModal();
-
   return (
     <footer className="site-footer">
       <div className="container">
@@ -27,22 +25,22 @@ export function Footer() {
           <div className="footer-col">
             <h4>Programmes</h4>
             <div className="footer-links">
-              <a href="#programs">Banking Coaching</a>
-              <a href="#programs">SSC Central Govt</a>
-              <a href="#programs">SSC + Banking Combo</a>
-              <a href="#programs">School Foundation (8-10th)</a>
-              <a href="#workshop">Free Career Workshop</a>
+              <Link to="/programs/banking">Banking Coaching</Link>
+              <Link to="/programs/ssc">SSC Central Govt</Link>
+              <Link to="/programs/ssc-banking-combo">SSC + Banking Combo</Link>
+              <Link to="/programs/foundation">School Foundation (8-10th)</Link>
+              <Link to="/workshop">Free Career Workshop</Link>
             </div>
           </div>
 
           <div className="footer-col">
             <h4>Academy & Trust</h4>
             <div className="footer-links">
-              <a href="#methodology">5 Jutsu Methodology</a>
-              <a href="#mentors">Our Mentors</a>
-              <a href="#transparency">Fee Transparency</a>
-              <button type="button" onClick={() => openPolicyModal('privacy')}>Privacy Policy</button>
-              <button type="button" onClick={() => openPolicyModal('terms')}>Terms & Conditions</button>
+              <Link to="/methodology">5 Jutsu Methodology</Link>
+              <Link to="/mentors">Our Mentors</Link>
+              <Link to="/fees">Fee Transparency</Link>
+              <Link to="/policies?tab=privacy">Privacy Policy</Link>
+              <Link to="/policies?tab=terms">Terms & Conditions</Link>
             </div>
           </div>
 
@@ -63,21 +61,21 @@ export function Footer() {
         <div className="footer-bottom">
           <div>© 2026 AT Sensei Academy. All rights reserved.</div>
           <div style={{ display: 'flex', gap: 'var(--space-4)', flexWrap: 'wrap' }}>
-            <button type="button" onClick={() => openPolicyModal('privacy')} style={{ background: 'none', border: 'none', color: 'var(--color-text-inverse-muted)', cursor: 'pointer', textDecoration: 'underline' }}>
+            <Link to="/policies?tab=privacy" style={{ color: 'var(--color-text-inverse-muted)', textDecoration: 'underline' }}>
               Privacy Policy
-            </button>
-            <button type="button" onClick={() => openPolicyModal('terms')} style={{ background: 'none', border: 'none', color: 'var(--color-text-inverse-muted)', cursor: 'pointer', textDecoration: 'underline' }}>
+            </Link>
+            <Link to="/policies?tab=terms" style={{ color: 'var(--color-text-inverse-muted)', textDecoration: 'underline' }}>
               Terms of Service
-            </button>
-            <button type="button" onClick={() => openPolicyModal('refund')} style={{ background: 'none', border: 'none', color: 'var(--color-text-inverse-muted)', cursor: 'pointer', textDecoration: 'underline' }}>
+            </Link>
+            <Link to="/policies?tab=refund" style={{ color: 'var(--color-text-inverse-muted)', textDecoration: 'underline' }}>
               Refund Policy
-            </button>
-            <button type="button" onClick={() => openPolicyModal('minorConsent')} style={{ background: 'none', border: 'none', color: 'var(--color-text-inverse-muted)', cursor: 'pointer', textDecoration: 'underline' }}>
+            </Link>
+            <Link to="/policies?tab=minorConsent" style={{ color: 'var(--color-text-inverse-muted)', textDecoration: 'underline' }}>
               Minor & Parent Consent
-            </button>
-            <button type="button" onClick={() => openPolicyModal('disclaimer')} style={{ background: 'none', border: 'none', color: 'var(--color-text-inverse-muted)', cursor: 'pointer', textDecoration: 'underline' }}>
+            </Link>
+            <Link to="/policies?tab=disclaimer" style={{ color: 'var(--color-text-inverse-muted)', textDecoration: 'underline' }}>
               Disclaimer
-            </button>
+            </Link>
           </div>
         </div>
       </div>

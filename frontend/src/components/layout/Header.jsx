@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { NavLink, Link } from 'react-router-dom';
 import { useModal } from '../../context/ModalContext';
 
 export function Header({ onOpenMobileMenu }) {
@@ -16,22 +17,23 @@ export function Header({ onOpenMobileMenu }) {
   return (
     <header className={`site-header ${isScrolled ? 'is-scrolled' : ''}`} id="site-header">
       <div className="container header-inner">
-        <a href="#hero" className="brand-logo" aria-label="AT Sensei Academy Home">
+        <Link to="/" className="brand-logo" aria-label="AT Sensei Academy Home">
           <div className="brand-icon">AT</div>
           <div className="brand-text">
             <span className="brand-title">AT <span className="red-accent">Sensei</span> Academy</span>
             <span className="brand-tagline">Learn Today, Lead Tomorrow</span>
           </div>
-        </a>
+        </Link>
 
         <nav className="nav-menu" aria-label="Main Navigation">
-          <a href="#programs" className="nav-link">Programs</a>
-          <a href="#methodology" className="nav-link">5 Jutsu Method</a>
-          <a href="#workshop" className="nav-link">Free Workshop</a>
-          <a href="#mentors" className="nav-link">Mentors</a>
-          <a href="#transparency" className="nav-link">Fees & Batches</a>
-          <a href="#faq" className="nav-link">FAQ</a>
-          <a href="#contact" className="nav-link">Contact</a>
+          <NavLink to="/" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} end>Home</NavLink>
+          <NavLink to="/programs" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Programs</NavLink>
+          <NavLink to="/methodology" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>5 Jutsu Method</NavLink>
+          <NavLink to="/workshop" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Free Workshop</NavLink>
+          <NavLink to="/mentors" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Mentors</NavLink>
+          <NavLink to="/fees" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Fees & Batches</NavLink>
+          <NavLink to="/faq" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>FAQ</NavLink>
+          <NavLink to="/contact" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Contact</NavLink>
         </nav>
 
         <div className="header-actions" style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
@@ -42,9 +44,9 @@ export function Header({ onOpenMobileMenu }) {
           >
             Free Workshop
           </button>
-          <a href="#admission-section" className="btn btn-primary btn-sm header-cta-desktop">
+          <Link to="/admissions" className="btn btn-primary btn-sm header-cta-desktop">
             Enquire Now
-          </a>
+          </Link>
           <button
             type="button"
             className="mobile-nav-toggle"

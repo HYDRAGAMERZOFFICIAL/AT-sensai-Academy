@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useModal } from '../../context/ModalContext';
 
 export function MobileDrawer({ isOpen, onClose }) {
@@ -21,14 +22,15 @@ export function MobileDrawer({ isOpen, onClose }) {
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', marginBottom: 'var(--space-8)' }}>
-          <a href="#programs" onClick={onClose} style={{ fontWeight: 700, fontSize: '1.1rem', color: 'var(--color-primary-navy)' }}>Programs</a>
-          <a href="#methodology" onClick={onClose} style={{ fontWeight: 700, fontSize: '1.1rem', color: 'var(--color-primary-navy)' }}>5 Jutsu Method</a>
-          <a href="#workshop" onClick={onClose} style={{ fontWeight: 700, fontSize: '1.1rem', color: 'var(--color-primary-navy)' }}>Free Career Workshop</a>
-          <a href="#mentors" onClick={onClose} style={{ fontWeight: 700, fontSize: '1.1rem', color: 'var(--color-primary-navy)' }}>Our Mentors</a>
-          <a href="#transparency" onClick={onClose} style={{ fontWeight: 700, fontSize: '1.1rem', color: 'var(--color-primary-navy)' }}>Fees & Batches</a>
-          <a href="#faq" onClick={onClose} style={{ fontWeight: 700, fontSize: '1.1rem', color: 'var(--color-primary-navy)' }}>FAQ</a>
-          <a href="#admission-section" onClick={onClose} style={{ fontWeight: 700, fontSize: '1.1rem', color: 'var(--color-primary-navy)' }}>Admission Request</a>
-          <a href="#contact" onClick={onClose} style={{ fontWeight: 700, fontSize: '1.1rem', color: 'var(--color-primary-navy)' }}>Campus & Contact</a>
+          <Link to="/" onClick={onClose} style={{ fontWeight: 700, fontSize: '1.1rem', color: 'var(--color-primary-navy)' }}>Home</Link>
+          <Link to="/programs" onClick={onClose} style={{ fontWeight: 700, fontSize: '1.1rem', color: 'var(--color-primary-navy)' }}>Programs Catalog</Link>
+          <Link to="/methodology" onClick={onClose} style={{ fontWeight: 700, fontSize: '1.1rem', color: 'var(--color-primary-navy)' }}>5 Jutsu Method</Link>
+          <Link to="/workshop" onClick={onClose} style={{ fontWeight: 700, fontSize: '1.1rem', color: 'var(--color-primary-navy)' }}>Free Career Workshop</Link>
+          <Link to="/mentors" onClick={onClose} style={{ fontWeight: 700, fontSize: '1.1rem', color: 'var(--color-primary-navy)' }}>Our Mentors</Link>
+          <Link to="/fees" onClick={onClose} style={{ fontWeight: 700, fontSize: '1.1rem', color: 'var(--color-primary-navy)' }}>Fees & Batches</Link>
+          <Link to="/faq" onClick={onClose} style={{ fontWeight: 700, fontSize: '1.1rem', color: 'var(--color-primary-navy)' }}>FAQ</Link>
+          <Link to="/admissions" onClick={onClose} style={{ fontWeight: 700, fontSize: '1.1rem', color: 'var(--color-primary-navy)' }}>Admission Request</Link>
+          <Link to="/contact" onClick={onClose} style={{ fontWeight: 700, fontSize: '1.1rem', color: 'var(--color-primary-navy)' }}>Campus & Contact</Link>
         </div>
 
         <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
