@@ -4,7 +4,7 @@
 -- ===================================================================
 
 -- Programs
-INSERT INTO programs (code, title, category, tag, fee_display, fee_subtext, validity, timings, batches, eligibility, description, featured, subjects_json, exams_json, curriculum_json)
+MERGE INTO programs (code, title, category, tag, fee_display, fee_subtext, validity, timings, batches, eligibility, description, featured, subjects_json, exams_json, curriculum_json) KEY(code)
 VALUES (
   'banking',
   'Banking Programme',
@@ -23,7 +23,7 @@ VALUES (
   '[{"subject":"Quantitative Aptitude","topics":"Number Systems, Simplification, Percentages, Ratio, Profit & Loss, SI & CI, Time & Work, Speed Distance, Data Interpretation (DI)."},{"subject":"Logical Reasoning","topics":"Puzzles, Seating Arrangements, Syllogisms, Coding-Decoding, Blood Relations, Inequalities."},{"subject":"English Language","topics":"Reading Comprehension, Cloze Test, Error Spotting, Para Jumbles, Vocabulary."},{"subject":"Banking Awareness","topics":"RBI Monetary Policy, Financial Markets, Inflation, Budget, Banking Terminology."}]'
 );
 
-INSERT INTO programs (code, title, category, tag, fee_display, fee_subtext, validity, timings, batches, eligibility, description, featured, subjects_json, exams_json, curriculum_json)
+MERGE INTO programs (code, title, category, tag, fee_display, fee_subtext, validity, timings, batches, eligibility, description, featured, subjects_json, exams_json, curriculum_json) KEY(code)
 VALUES (
   'ssc',
   'SSC Programme',
@@ -42,7 +42,7 @@ VALUES (
   '[{"subject":"Quantitative Aptitude & Advance Maths","topics":"Percentages, Profit & Loss, Geometry, Trigonometry, Mensuration, Algebra, Statistics."},{"subject":"General Awareness","topics":"History, Polity, Geography, Economy, General Science (Physics, Chemistry, Biology)."},{"subject":"General Intelligence","topics":"Analogies, Classifications, Series, Non-Verbal Reasoning, Venn Diagrams."},{"subject":"English Comprehension","topics":"Grammar, Active/Passive Voice, Direct/Indirect Speech, Idioms, Vocab."}]'
 );
 
-INSERT INTO programs (code, title, category, tag, fee_display, fee_subtext, validity, timings, batches, eligibility, description, featured, subjects_json, exams_json, curriculum_json)
+MERGE INTO programs (code, title, category, tag, fee_display, fee_subtext, validity, timings, batches, eligibility, description, featured, subjects_json, exams_json, curriculum_json) KEY(code)
 VALUES (
   'ssc-banking-combo',
   'SSC + Banking Combo',
@@ -61,7 +61,7 @@ VALUES (
   '[{"subject":"Dual Syllabus Integration","topics":"Complete coverage of Banking high-speed arithmetic, multi-variable puzzles and financial awareness PLUS SSC advance math, geometry, polity, history and general science."}]'
 );
 
-INSERT INTO programs (code, title, category, tag, fee_display, fee_subtext, validity, timings, batches, eligibility, description, featured, subjects_json, exams_json, curriculum_json)
+MERGE INTO programs (code, title, category, tag, fee_display, fee_subtext, validity, timings, batches, eligibility, description, featured, subjects_json, exams_json, curriculum_json) KEY(code)
 VALUES (
   'foundation',
   'School Foundation Course',
@@ -81,8 +81,9 @@ VALUES (
 );
 
 -- Mentors
-INSERT INTO mentors (name, initials, qualification, experience, focus, active)
+MERGE INTO mentors (id, name, initials, qualification, experience, focus, active) KEY(id)
 VALUES (
+  1,
   'Mohan Sensei',
   'M',
   'Bachelor of Engineering (B.E.)',
@@ -91,8 +92,9 @@ VALUES (
   true
 );
 
-INSERT INTO mentors (name, initials, qualification, experience, focus, active)
+MERGE INTO mentors (id, name, initials, qualification, experience, focus, active) KEY(id)
 VALUES (
+  2,
   'Anikethana Sensei',
   'A',
   'Master of Science in Physics (M.Sc.)',
@@ -101,8 +103,9 @@ VALUES (
   true
 );
 
-INSERT INTO mentors (name, initials, qualification, experience, focus, active)
+MERGE INTO mentors (id, name, initials, qualification, experience, focus, active) KEY(id)
 VALUES (
+  3,
   'Tansen Sensei',
   'T',
   'Bachelor of Science (B.Sc.)',
@@ -112,7 +115,7 @@ VALUES (
 );
 
 -- Comprehensive Legal Policies
-INSERT INTO policies (policy_key, title, content_html)
+MERGE INTO policies (policy_key, title, content_html) KEY(policy_key)
 VALUES (
   'privacy',
   'Privacy & Data Protection Policy (DPDP Aligned)',
@@ -159,7 +162,7 @@ VALUES (
   </div>'
 );
 
-INSERT INTO policies (policy_key, title, content_html)
+MERGE INTO policies (policy_key, title, content_html) KEY(policy_key)
 VALUES (
   'terms',
   'Terms & Conditions of Admission & Service',
@@ -186,7 +189,7 @@ VALUES (
   </div>'
 );
 
-INSERT INTO policies (policy_key, title, content_html)
+MERGE INTO policies (policy_key, title, content_html) KEY(policy_key)
 VALUES (
   'refund',
   'Transparent Fee & Refund Policy',
@@ -211,7 +214,7 @@ VALUES (
   </div>'
 );
 
-INSERT INTO policies (policy_key, title, content_html)
+MERGE INTO policies (policy_key, title, content_html) KEY(policy_key)
 VALUES (
   'minorConsent',
   'Minor Protection & Parent Consent Framework',
@@ -233,7 +236,7 @@ VALUES (
   </div>'
 );
 
-INSERT INTO policies (policy_key, title, content_html)
+MERGE INTO policies (policy_key, title, content_html) KEY(policy_key)
 VALUES (
   'disclaimer',
   'Institutional Disclaimer & Academic Standards',
@@ -257,8 +260,9 @@ VALUES (
 );
 
 -- Announcements Seed Data
-INSERT INTO announcements (icon, category, text, active, display_order, action_link, action_text)
+MERGE INTO announcements (id, icon, category, text, active, display_order, action_link, action_text) KEY(id)
 VALUES (
+  1,
   '📢',
   'Upcoming Batch',
   'Upcoming Batch: Banking & SSC Morning Batch starts Monday (10:00 AM – 12:00 PM)',
@@ -268,8 +272,9 @@ VALUES (
   'Reserve Seat'
 );
 
-INSERT INTO announcements (icon, category, text, active, display_order, action_link, action_text)
+MERGE INTO announcements (id, icon, category, text, active, display_order, action_link, action_text) KEY(id)
 VALUES (
+  2,
   '🎯',
   'Foundation 2026/27',
   'Foundation 2026/27: Evening Batch for 8th–10th (6:30 PM – 8:00 PM) Admissions Open',
@@ -279,8 +284,9 @@ VALUES (
   'Apply Now'
 );
 
-INSERT INTO announcements (icon, category, text, active, display_order, action_link, action_text)
+MERGE INTO announcements (id, icon, category, text, active, display_order, action_link, action_text) KEY(id)
 VALUES (
+  3,
   '🎓',
   'Free Workshop',
   'Free Workshop: 100% Free Career Awareness Workshop seats filling fast',

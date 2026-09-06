@@ -4,10 +4,10 @@ import { EnquiryService } from '../../api/enquiryService';
 import { useToast } from '../../context/ToastContext';
 
 const COURSE_MAP = {
-  banking: 'Banking Programme (₹16,999)',
-  ssc: 'SSC Programme (₹18,999)',
-  'ssc-banking-combo': 'SSC + Banking Combo (₹27,999)',
-  foundation: 'School Foundation Course 8th–10th (From ₹18,000)'
+  banking: 'Banking Programme',
+  ssc: 'SSC Programme',
+  'ssc-banking-combo': 'SSC + Banking Combo',
+  foundation: 'School Foundation Course (8th–10th)'
 };
 
 export function EnquirySection({ preselectedCourse = '' }) {
@@ -239,10 +239,10 @@ export function EnquirySection({ preselectedCourse = '' }) {
                     value={formData.courseCode}
                     onChange={handleChange}
                   >
-                    <option value="banking">Banking Programme (₹16,999)</option>
-                    <option value="ssc">SSC Programme (₹18,999)</option>
-                    <option value="ssc-banking-combo">SSC + Banking Combo (₹27,999)</option>
-                    <option value="foundation">School Foundation Course 8th–10th (From ₹18,000)</option>
+                    <option value="banking">Banking Programme</option>
+                    <option value="ssc">SSC Programme</option>
+                    <option value="ssc-banking-combo">SSC + Banking Combo</option>
+                    <option value="foundation">School Foundation Course (8th–10th)</option>
                   </select>
                 </div>
 
