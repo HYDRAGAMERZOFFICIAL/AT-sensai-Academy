@@ -22,17 +22,17 @@ export function MentorSection() {
   }, []);
 
   return (
-    <section className="section section-alt" id="mentors">
+    <section className="section" id="mentors">
       <div className="container">
         <div className="section-header">
-          <span className="section-tag">Faculty & Leadership</span>
-          <h2>Guided by Dedicated Mentors</h2>
-          <p>Learn from experienced educators who combine deep subject knowledge with real competitive exam insight.</p>
+          <span className="section-tag">Faculty & Mentors</span>
+          <h2>Meet Your Subject Senseis</h2>
+          <p>Learn from educators who combine engineering & science foundations with real competitive exam teaching pedigree.</p>
         </div>
 
         {loading ? (
           <div style={{ textAlign: 'center', padding: 'var(--space-8)', color: 'var(--color-text-muted)' }}>
-            Loading mentor profiles...
+            Loading faculty profiles...
           </div>
         ) : (
           <div className="mentors-grid">

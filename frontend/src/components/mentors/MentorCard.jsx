@@ -2,16 +2,14 @@ import React from 'react';
 
 export function MentorCard({ mentor }) {
   return (
-    <article className="mentor-card">
-      <div className="mentor-avatar">{mentor.initials}</div>
-      <h3 style={{ fontSize: 'var(--font-size-xl)', marginBottom: 'var(--space-1)' }}>{mentor.name}</h3>
-      <div style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-brand-blue)', fontWeight: 600, marginBottom: 'var(--space-2)' }}>
-        {mentor.qualification}
+    <article className="mentor-card-clean">
+      <div className="mentor-avatar-clean">
+        {mentor.initials || mentor.name.charAt(0)}
       </div>
-      <span className="badge badge-gold" style={{ marginBottom: 'var(--space-4)' }}>
-        {mentor.experience}
-      </span>
-      <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-text-secondary)', borderTop: '1px solid var(--color-border-subtle)', paddingTop: 'var(--space-4)' }}>
+      <h3 className="mentor-name">{mentor.name}</h3>
+      <div className="mentor-qualification">{mentor.qualification}</div>
+      <span className="mentor-experience-badge">{mentor.experience}</span>
+      <p className="mentor-focus-text">
         {mentor.focus}
       </p>
     </article>

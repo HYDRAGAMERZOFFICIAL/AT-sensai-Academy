@@ -2,32 +2,32 @@ import React, { useState } from 'react';
 
 const FAQS = [
   {
-    q: 'What is the 3-Year Extended Course Validity benefit?',
-    a: 'For Banking, SSC, and Combo programmes, your admission remains active for 3 full years (36 months). You can attend subsequent batch rotations, practice with refreshed mock tests, and consult mentors until you clear your targeted exam, without paying re-admission fees.'
+    q: 'What is the 3-Year Course Validity policy for competitive exams?',
+    a: 'Students enrolled in Banking, SSC, or Combo programs can attend classes, take revision batches, and access updated mock tests for 3 full years until they clear their targeted examination.'
   },
   {
-    q: 'Are the fees inclusive of GST and course materials?',
-    a: 'Yes. All stated fees (₹16,999 for Banking, ₹18,999 for SSC, ₹27,999 for Combo) include applicable GST. We maintain 100% pricing transparency with zero hidden charges.'
+    q: 'Are the displayed fees inclusive of GST and course materials?',
+    a: 'Yes. All fees listed on our website and catalog (Banking ₹16,999, SSC ₹18,999, Combo ₹27,999) are 100% transparent and inclusive of applicable GST with zero hidden costs.'
   },
   {
-    q: 'How does the School Foundation Course support minor students?',
-    a: 'Our School Foundation course operates 6 days a week from 6:30 PM to 8:00 PM for 8th, 9th, and 10th graders (State, CBSE, ICSE). In strict compliance with child protection guidelines, registration requires Parent/Guardian consent and all progress updates are communicated directly to parents.'
+    q: 'What are the batch timings for School Foundation (Classes 8th–10th)?',
+    a: 'School Foundation classes run 6 days a week from 6:30 PM to 8:00 PM, designed specifically to avoid conflicting with regular school hours while providing continuous concept mastery.'
   },
   {
-    q: 'Is the Career Awareness Workshop truly 100% Free?',
-    a: 'Yes. Our 45–90 minute Career & Competitive Exam Awareness Workshop is completely free for individual students as well as hosting schools/colleges as part of our academic outreach mission.'
+    q: 'What is covered in the 100% Free Career Awareness Workshop?',
+    a: 'The 45–90 minute workshop demystifies competitive exam eligibility (Banking, SSC, Railways, State exams), career pathways, syllabus breakdowns, and provides a customized preparation roadmap.'
   },
   {
-    q: 'Where is the academy campus located in Bangalore?',
-    a: 'Our center is located at #16, Opp. MNTI College, 16th Cross, Kammagondanahalli, Abbigere Main Road, Bangalore – 560015. You can reach us on +91 91106 87171 or +91 63606 51497.'
+    q: 'Can parents enroll students for the Foundation course directly?',
+    a: 'Yes. For minors in classes 8th to 10th, we provide a verified parent/guardian consent flow during admission to ensure transparency and proper academic counseling.'
   }
 ];
 
 export function FAQSection() {
-  const [openIndex, setOpenIndex] = useState(0);
+  const [openIdx, setOpenIdx] = useState(0);
 
   const toggle = (idx) => {
-    setOpenIndex(openIndex === idx ? -1 : idx);
+    setOpenIdx(openIdx === idx ? null : idx);
   };
 
   return (
@@ -36,54 +36,30 @@ export function FAQSection() {
         <div className="section-header">
           <span className="section-tag">Common Queries</span>
           <h2>Frequently Asked Questions</h2>
-          <p>Everything you need to know about our batches, validity, fees, and workshop sessions.</p>
+          <p>Everything you need to know about courses, schedules, validity, and admissions.</p>
         </div>
 
-        <div style={{ maxWidth: '800px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
-          {FAQS.map((faq, idx) => {
-            const isOpen = openIndex === idx;
-            return (
-              <div
-                key={idx}
-                style={{
-                  background: '#fff',
-                  borderRadius: 'var(--radius-lg)',
-                  border: `1px solid ${isOpen ? 'var(--color-brand-blue)' : 'var(--color-border-subtle)'}`,
-                  overflow: 'hidden'
-                }}
+        <div className="faq-list">
+          {FAQS.map((faq, idx) => (
+            <div key={idx} className={`faq-item ${openIdx === idx ? 'open' : ''}`}>
+              <button
+                type="button"
+                className="faq-trigger"
+                onClick={() => toggle(idx)}
+                aria-expanded={openIdx === idx}
               >
-                <button
-                  type="button"
-                  onClick={() => toggle(idx)}
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    padding: 'var(--space-5) var(--space-6)',
-                    background: 'none',
-                    border: 'none',
-                    textAlign: 'left',
-                    fontFamily: 'var(--font-heading)',
-                    fontSize: 'var(--font-size-base)',
-                    fontWeight: 700,
-                    color: 'var(--color-primary-navy)',
-                    cursor: 'pointer'
-                  }}
-                >
-                  <span>{faq.q}</span>
-                  <span style={{ transform: isOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s', color: 'var(--color-brand-blue)' }}>
-                    ▾
-                  </span>
-                </button>
-                {isOpen && (
-                  <div style={{ padding: '0 var(--space-6) var(--space-6) var(--space-6)', fontSize: '0.9rem', color: 'var(--color-text-secondary)', lineHeight: 1.7 }}>
-                    {faq.a}
-                  </div>
-                )}
-              </div>
-            );
-          })}
+                <span>{faq.q}</span>
+                <span style={{ fontSize: '1.25rem', color: openIdx === idx ? 'var(--color-sensei-red)' : 'var(--color-text-muted)', marginLeft: 'var(--space-4)' }}>
+                  {openIdx === idx ? '−' : '+'}
+                </span>
+              </button>
+              {openIdx === idx && (
+                <div className="faq-answer">
+                  {faq.a}
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </div>
     </section>

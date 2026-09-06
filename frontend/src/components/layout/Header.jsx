@@ -8,7 +8,7 @@ export function Header({ onOpenMobileMenu }) {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
+      setIsScrolled(window.scrollY > 30);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
@@ -30,8 +30,8 @@ export function Header({ onOpenMobileMenu }) {
           <NavLink to="/programs" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Programs</NavLink>
           <NavLink to="/methodology" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>5 Jutsu Method</NavLink>
           <NavLink to="/workshop" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Free Workshop</NavLink>
-          <NavLink to="/mentors" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Mentors</NavLink>
-          <NavLink to="/fees" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Fees & Batches</NavLink>
+          <NavLink to="/mentors" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Faculty</NavLink>
+          <NavLink to="/fees" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Fees Matrix</NavLink>
           <NavLink to="/faq" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>FAQ</NavLink>
           <NavLink to="/contact" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Contact</NavLink>
         </nav>

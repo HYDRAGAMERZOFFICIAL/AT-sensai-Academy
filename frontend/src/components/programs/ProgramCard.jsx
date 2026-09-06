@@ -1,13 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useModal } from '../../context/ModalContext';
 
 export function ProgramCard({ program, onEnrollClick }) {
-  const { openCurriculumModal } = useModal();
-
   const isFeatured = program.featured ? 'featured' : '';
   const badgeCategory = program.category === 'school' ? 'badge-gold' : 'badge-blue';
-  const categoryName = program.category === 'school' ? 'School Foundation' : 'Govt Competitive';
+  const categoryName = program.category === 'school' ? 'School Foundation' : 'Competitive Track';
 
   let subjects = [];
   try {
@@ -25,35 +22,35 @@ export function ProgramCard({ program, onEnrollClick }) {
 
   return (
     <article className={`program-card ${isFeatured}`} id={`card-${program.code}`}>
-      {program.featured && <div className="program-card-ribbon">{program.tag}</div>}
+      {program.featured && <div className="program-card-ribbon">{program.tag || 'Popular'}</div>}
 
-      <div style={{ marginBottom: 'var(--space-4)' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-2)' }}>
+      <div className="program-card-header">
+        <div className="program-card-top-tags">
           <span className={`badge ${badgeCategory}`}>{categoryName}</span>
-          <span className="badge badge-navy">Target 2026 / 2027</span>
+          <span className="badge badge-navy">Batch 2026/27</span>
         </div>
 
-        <div className="edtech-meta-row">
+        <div className="program-meta-line">
           <span className="edtech-rating">★ 4.9</span>
           <span>•</span>
-          <span>{program.validity} Course Validity</span>
+          <span>{program.validity} Validity</span>
           <span>•</span>
-          <span>Bilingual Guidance</span>
+          <span>Offline + Hybrid</span>
         </div>
 
-        <h3 style={{ fontSize: 'var(--font-size-2xl)', marginBottom: 'var(--space-2)' }}>
-          <Link to={`/programs/${program.code}`} style={{ color: 'inherit' }}>
+        <h3 className="program-card-title">
+          <Link to={`/programs/${program.code}`}>
             {program.title}
           </Link>
         </h3>
-        <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-4)', lineHeight: 1.6 }}>
+        <p className="program-card-desc">
           {program.description}
         </p>
       </div>
 
       <div className="program-details-box">
         <div className="detail-item">
-          <span className="detail-label">Schedule / Timings</span>
+          <span className="detail-label">Schedule & Timings</span>
           <span className="detail-val">{program.timings}</span>
         </div>
         <div className="detail-item">
@@ -62,54 +59,54 @@ export function ProgramCard({ program, onEnrollClick }) {
         </div>
       </div>
 
-      <div style={{ marginBottom: 'var(--space-4)' }}>
-        <div style={{ fontSize: 'var(--font-size-xs)', fontWeight: 700, textTransform: 'uppercase', color: 'var(--color-text-muted)', marginBottom: 'var(--space-2)' }}>
-          Target Exams Covered
+      {exams.length > 0 && (
+        <div style={{ marginBottom: 'var(--space-3)' }}>
+          <div className="program-section-label">Target Exams</div>
+          <div className="subject-tags">
+            {exams.slice(0, 3).map((ex, idx) => (
+              <span key={idx} className="subject-tag highlight">
+                {ex}
+              </span>
+            ))}
+            {exams.length > 3 && (
+              <span className="subject-tag">+{exams.length - 3} more</span>
+            )}
+          </div>
         </div>
-        <div className="subject-tags" style={{ marginBottom: 'var(--space-3)' }}>
-          {exams.slice(0, 3).map((ex, idx) => (
-            <span key={idx} className="subject-tag" style={{ background: 'var(--color-brand-blue-soft)', color: 'var(--color-brand-blue)', fontWeight: 600 }}>
-              {ex}
-            </span>
-          ))}
-          {exams.length > 3 && (
-            <span className="subject-tag">+{exams.length - 3} more</span>
-          )}
-        </div>
-      </div>
+      )}
 
-      <div style={{ marginBottom: 'var(--space-6)', flexGrow: 1 }}>
-        <div style={{ fontSize: 'var(--font-size-xs)', fontWeight: 700, textTransform: 'uppercase', color: 'var(--color-text-muted)', marginBottom: 'var(--space-2)' }}>
-          Key Subjects & Syllabus
+      {subjects.length > 0 && (
+        <div style={{ marginBottom: 'var(--space-4)' }}>
+          <div className="program-section-label">Core Subjects</div>
+          <div className="subject-tags">
+            {subjects.slice(0, 4).map((s, idx) => (
+              <span key={idx} className="subject-tag">{s}</span>
+            ))}
+            {subjects.length > 4 && (
+              <span className="subject-tag">+{subjects.length - 4} more</span>
+            )}
+          </div>
         </div>
-        <div className="subject-tags">
-          {subjects.slice(0, 4).map((s, idx) => (
-            <span key={idx} className="subject-tag">{s}</span>
-          ))}
-          {subjects.length > 4 && (
-            <span className="subject-tag">+{subjects.length - 4} more</span>
-          )}
-        </div>
-      </div>
+      )}
 
-      <div className="program-pricing">
+      <div className="program-pricing-box">
         <div>
           <div className="pricing-amount">{program.feeDisplay}</div>
-          <div style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-text-muted)' }}>{program.feeSubtext}</div>
+          <div className="pricing-subtext">{program.feeSubtext || 'Inclusive of GST'}</div>
         </div>
-        <span className="badge badge-emerald">Verified Catalog Fee</span>
+        <span className="badge badge-emerald">Verified Fee</span>
       </div>
 
       <div className="program-card-actions">
-        <Link to={`/programs/${program.code}`} className="btn btn-outline">
-          Explore Batch
+        <Link to={`/programs/${program.code}`} className="btn btn-outline btn-sm">
+          Syllabus & Details
         </Link>
         <button
           type="button"
-          className="btn btn-primary"
+          className="btn btn-primary btn-sm"
           onClick={() => onEnrollClick(program.code)}
         >
-          Enroll Now
+          Enquire Now
         </button>
       </div>
     </article>

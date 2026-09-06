@@ -17,42 +17,42 @@ export function Footer() {
             <p>
               Right awareness + right guidance + systematic preparation = a better career. Dedicated coaching for Banking, SSC and School Foundation in Bangalore.
             </p>
-            <div style={{ fontSize: '0.75rem', color: 'var(--color-text-inverse-muted)' }}>
+            <div style={{ fontSize: '0.75rem', color: 'var(--color-text-inverse-muted)', marginTop: 'var(--space-2)' }}>
               3-Year Extended Course Validity & Structured Mentorship.
             </div>
           </div>
 
           <div className="footer-col">
-            <h4>Programmes</h4>
+            <h4 className="footer-heading">Programmes</h4>
             <div className="footer-links">
               <Link to="/programs/banking">Banking Coaching</Link>
               <Link to="/programs/ssc">SSC Central Govt</Link>
               <Link to="/programs/ssc-banking-combo">SSC + Banking Combo</Link>
-              <Link to="/programs/foundation">School Foundation (8-10th)</Link>
+              <Link to="/programs/foundation">School Foundation (8th–10th)</Link>
               <Link to="/workshop">Free Career Workshop</Link>
             </div>
           </div>
 
           <div className="footer-col">
-            <h4>Academy & Trust</h4>
+            <h4 className="footer-heading">Academy & Trust</h4>
             <div className="footer-links">
               <Link to="/methodology">5 Jutsu Methodology</Link>
-              <Link to="/mentors">Our Mentors</Link>
+              <Link to="/mentors">Our Faculty</Link>
               <Link to="/fees">Fee Transparency</Link>
               <Link to="/policies?tab=privacy">Privacy Policy</Link>
-              <Link to="/policies?tab=terms">Terms & Conditions</Link>
+              <Link to="/policies?tab=terms">Terms of Service</Link>
             </div>
           </div>
 
           <div className="footer-col">
-            <h4>Contact & Location</h4>
-            <div style={{ fontSize: '0.85rem', marginBottom: 'var(--space-2)' }}>
+            <h4 className="footer-heading">Bangalore Campus</h4>
+            <div style={{ fontSize: '0.85rem', marginBottom: 'var(--space-2)', color: 'var(--color-text-inverse-muted)' }}>
               📍 #16, Opp. MNTI College, 16th Cross, Kammagondanahalli, Abbigere Main Rd, Bangalore – 560015
             </div>
-            <div style={{ fontSize: '0.85rem', marginBottom: 'var(--space-2)' }}>
+            <div style={{ fontSize: '0.85rem', marginBottom: 'var(--space-2)', color: 'var(--color-text-inverse-muted)' }}>
               📞 +91 91106 87171 / +91 63606 51497
             </div>
-            <div style={{ fontSize: '0.85rem' }}>
+            <div style={{ fontSize: '0.85rem', color: 'var(--color-text-inverse-muted)' }}>
               ✉️ atsensei0@gmail.com
             </div>
           </div>

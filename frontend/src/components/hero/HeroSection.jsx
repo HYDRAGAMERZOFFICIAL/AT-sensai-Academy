@@ -1,5 +1,6 @@
 import React from 'react';
 import { useModal } from '../../context/ModalContext';
+import { Link } from 'react-router-dom';
 
 export function HeroSection() {
   const { openWorkshopModal } = useModal();
@@ -8,15 +9,17 @@ export function HeroSection() {
     <section className="hero" id="hero">
       <div className="container hero-grid">
         <div className="hero-content">
-          <div className="hero-badge">
-            <span className="badge-live-pulse"></span>
-            <span>Admissions Open for Banking, SSC & Foundation</span>
+          <div className="hero-eyebrow">
+            <span className="hero-eyebrow-dot"></span>
+            <span>Admissions Open • 2026–2027 Batches</span>
           </div>
+
           <h1 className="hero-title">
-            Master Your Competitive Exams with <span className="gradient-text">Structured Guidance</span>
+            Competitive Exam Coaching & <span className="highlight-red">School Foundation</span>
           </h1>
+
           <p className="hero-subtitle">
-            Right awareness + right guidance + systematic preparation = a better career. We empower aspirants with exam-oriented training, 3-Year Extended Validity, and expert mentorship.
+            Right awareness + right guidance + systematic preparation = a better career. We prepare aspirants for Banking, SSC, Central Govt careers, and Classes 8th–10th conceptual foundations.
           </p>
 
           <div className="hero-cta-group">
@@ -25,68 +28,89 @@ export function HeroSection() {
             </a>
             <button
               type="button"
-              className="btn btn-gold btn-lg pulse-gold"
+              className="btn btn-gold btn-lg"
               onClick={() => openWorkshopModal()}
             >
               Book 100% Free Workshop
             </button>
           </div>
 
-          <div className="hero-stats-row">
-            <div className="stat-item">
-              <span className="stat-number">3 Years</span>
-              <span className="stat-label">Extended Course Validity</span>
+          <div className="hero-trust-chips">
+            <div className="trust-chip">
+              <span className="trust-chip-check">✓</span>
+              <span>3-Year Extended Validity</span>
             </div>
-            <div className="stat-item">
-              <span className="stat-number">100% Free</span>
-              <span className="stat-label">Career Awareness Workshops</span>
+            <div className="trust-chip">
+              <span className="trust-chip-check">✓</span>
+              <span>100% Transparent Fees (GST Incl.)</span>
             </div>
-            <div className="stat-item">
-              <span className="stat-number">6 Days / Wk</span>
-              <span className="stat-label">Structured Foundation Batches</span>
+            <div className="trust-chip">
+              <span className="trust-chip-check">✓</span>
+              <span>Bangalore Offline & Hybrid</span>
             </div>
           </div>
         </div>
 
         <div className="hero-visual">
-          <div className="hero-card-main">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 'var(--space-6)' }}>
+          <div className="hero-advantage-card">
+            <div className="hero-advantage-header">
               <div>
-                <h3 style={{ color: '#fff', fontSize: '1.35rem', marginBottom: '4px' }}>AT Sensei Advantage</h3>
-                <p style={{ color: 'var(--color-text-inverse-muted)', fontSize: '0.85rem' }}>Integrated Coaching Framework</p>
+                <h3 style={{ color: '#fff', fontSize: '1.25rem', marginBottom: '2px' }}>
+                  The Sensei Framework
+                </h3>
+                <p style={{ color: 'var(--color-text-inverse-muted)', fontSize: '0.8rem', margin: 0 }}>
+                  Structured paths designed for exam clearance
+                </p>
               </div>
-              <span className="badge badge-gold">Certified Curriculum</span>
+              <span className="badge badge-gold">Verified Tracks</span>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)', marginBottom: 'var(--space-6)' }}>
-              <div className="hero-card-item">
-                <div style={{ width: '32px', height: '32px', borderRadius: '4px', background: 'rgba(83,103,184,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-accent-gold)' }}>🏛️</div>
+            <div className="hero-advantage-list">
+              <div className="hero-advantage-row">
+                <div className="hero-advantage-icon">🏛️</div>
                 <div>
-                  <strong style={{ color: '#fff', fontSize: '0.95rem', display: 'block' }}>Banking Mastery</strong>
-                  <span style={{ fontSize: '0.8rem', color: 'var(--color-text-inverse-muted)' }}>IBPS, SBI, RBI, LIC & RRB with 3-Yr Support</span>
+                  <strong style={{ color: '#fff', fontSize: '0.95rem', display: 'block' }}>
+                    Banking Mastery
+                  </strong>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--color-text-inverse-muted)' }}>
+                    IBPS PO/Clerk, SBI PO/Clerk, RBI Assistant, LIC & RRB with 3-Yr Support
+                  </span>
                 </div>
               </div>
 
-              <div className="hero-card-item">
-                <div style={{ width: '32px', height: '32px', borderRadius: '4px', background: 'rgba(83,103,184,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-accent-gold)' }}>🎯</div>
+              <div className="hero-advantage-row">
+                <div className="hero-advantage-icon">🎯</div>
                 <div>
-                  <strong style={{ color: '#fff', fontSize: '0.95rem', display: 'block' }}>SSC Central Govt Exams</strong>
-                  <span style={{ fontSize: '0.8rem', color: 'var(--color-text-inverse-muted)' }}>CGL, CHSL, MTS, CPO, GD & Intelligence Bureau</span>
+                  <strong style={{ color: '#fff', fontSize: '0.95rem', display: 'block' }}>
+                    SSC Central Govt Exams
+                  </strong>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--color-text-inverse-muted)' }}>
+                    CGL, CHSL, MTS, CPO, GD Constable, and Intelligence Bureau
+                  </span>
                 </div>
               </div>
 
-              <div className="hero-card-item">
-                <div style={{ width: '32px', height: '32px', borderRadius: '4px', background: 'rgba(83,103,184,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-accent-gold)' }}>📚</div>
+              <div className="hero-advantage-row">
+                <div className="hero-advantage-icon">📚</div>
                 <div>
-                  <strong style={{ color: '#fff', fontSize: '0.95rem', display: 'block' }}>School Foundation (8th-10th)</strong>
-                  <span style={{ fontSize: '0.8rem', color: 'var(--color-text-inverse-muted)' }}>State, CBSE & ICSE Concept Mastery (6:30 PM - 8:00 PM)</span>
+                  <strong style={{ color: '#fff', fontSize: '0.95rem', display: 'block' }}>
+                    School Foundation (8th–10th)
+                  </strong>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--color-text-inverse-muted)' }}>
+                    State Board, CBSE & ICSE Concept Mastery (6:30 PM – 8:00 PM)
+                  </span>
                 </div>
               </div>
             </div>
 
-            <div style={{ padding: 'var(--space-4)', background: 'rgba(255,255,255,0.06)', borderRadius: 'var(--radius-md)', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <div style={{ fontWeight: 800, fontSize: '0.95rem', color: '#fff' }}>✓ Transparent Fees</div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--color-text-inverse-muted)' }}>All prices inclusive of GST with zero hidden costs</div>
+            <div className="hero-advantage-banner">
+              <span><strong>💡 Free Guidance:</strong> Attend our 45–90 min Awareness Session</span>
+              <button 
+                onClick={() => openWorkshopModal()}
+                style={{ background: 'none', border: 'none', color: 'var(--color-primary-navy)', fontWeight: 800, textDecoration: 'underline', cursor: 'pointer' }}
+              >
+                Join Free →
+              </button>
             </div>
           </div>
         </div>
