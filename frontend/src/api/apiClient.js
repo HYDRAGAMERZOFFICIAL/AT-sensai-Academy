@@ -13,8 +13,16 @@ export async function request(endpoint, options = {}) {
     'Accept': 'application/json'
   };
 
+  let body = options.body;
+  if (body !== undefined && body !== null) {
+    if (typeof body === 'object' && !(body instanceof FormData)) {
+      body = JSON.stringify(body);
+    }
+  }
+
   const config = {
     ...options,
+    body,
     headers: {
       ...defaultHeaders,
       ...options.headers

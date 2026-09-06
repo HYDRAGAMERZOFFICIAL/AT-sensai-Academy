@@ -527,12 +527,12 @@ img, svg {
   background: #fff;
   border: 1px solid var(--color-border-subtle);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-xl);
+  box-shadow: 0 16px 36px rgba(7, 26, 77, 0.18);
   padding: var(--space-3);
   display: none;
   flex-direction: column;
   gap: 2px;
-  z-index: 120;
+  z-index: 350;
   animation: slideDown 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 

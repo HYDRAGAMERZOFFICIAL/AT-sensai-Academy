@@ -7,11 +7,13 @@ C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\announce
 C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\announcement\AnnouncementRepository.java
 C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\announcement\AnnouncementService.java
 C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\auth\AdminAuthController.java
+C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\auth\AdminAuthRequestDTO.java
 C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\enquiry\EnquiryController.java
 C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\enquiry\EnquiryEntity.java
 C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\enquiry\EnquiryRepository.java
 C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\enquiry\EnquiryRequestDTO.java
 C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\enquiry\EnquiryService.java
+C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\enquiry\EnquiryStatusUpdateDTO.java
 C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\enquiry\GuardianConsentEntity.java
 C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\mentor\MentorController.java
 C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\mentor\MentorEntity.java
@@ -23,6 +25,7 @@ C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\policy\P
 C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\policy\PolicyService.java
 C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\program\ProgramController.java
 C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\program\ProgramEntity.java
+C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\program\ProgramFeeUpdateDTO.java
 C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\program\ProgramRepository.java
 C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\program\ProgramService.java
 C:\AT-sensai-Academy\backend\src\main\java\com\atsensei\academy\modules\workshop\WorkshopBookingDTO.java

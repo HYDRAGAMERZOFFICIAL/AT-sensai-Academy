@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/programs")
@@ -38,11 +37,11 @@ public class ProgramController {
     @PatchMapping("/{code}/fee")
     public ResponseEntity<ApiResponse<ProgramEntity>> updateProgramFee(
             @PathVariable String code,
-            @RequestBody Map<String, String> payload) {
-        String feeDisplay = payload.get("feeDisplay");
-        String feeSubtext = payload.get("feeSubtext");
-        String validity = payload.get("validity");
-        String timings = payload.get("timings");
+            @RequestBody(required = false) ProgramFeeUpdateDTO dto) {
+        String feeDisplay = (dto != null) ? dto.getFeeDisplay() : null;
+        String feeSubtext = (dto != null) ? dto.getFeeSubtext() : null;
+        String validity = (dto != null) ? dto.getValidity() : null;
+        String timings = (dto != null) ? dto.getTimings() : null;
 
         return programService.updateProgramFee(code, feeDisplay, feeSubtext, validity, timings)
                 .map(updated -> ResponseEntity.ok(ApiResponse.ok("Program fee and details updated successfully", updated)))

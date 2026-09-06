@@ -1,30 +1,32 @@
-import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { TopBar } from './components/layout/TopBar';
-import { Header } from './components/layout/Header';
-import { MobileDrawer } from './components/layout/MobileDrawer';
-import { Footer } from './components/layout/Footer';
+import { useState } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ScrollToTop } from './components/common/ScrollToTop';
 import { SenseiChatbot } from './components/common/SenseiChatbot';
+import { Footer } from './components/layout/Footer';
+import { Header } from './components/layout/Header';
+import { MobileDrawer } from './components/layout/MobileDrawer';
+import { TopBar } from './components/layout/TopBar';
 
 // Dedicated Modular Pages
-import { HomePage } from './pages/HomePage';
-import { ProgramsPage } from './pages/ProgramsPage';
-import { ProgramDetailPage } from './pages/ProgramDetailPage';
-import { MethodologyPage } from './pages/MethodologyPage';
-import { WorkshopPage } from './pages/WorkshopPage';
-import { MentorsPage } from './pages/MentorsPage';
-import { FeesPage } from './pages/FeesPage';
-import { AdmissionPage } from './pages/AdmissionPage';
-import { FAQPage } from './pages/FAQPage';
-import { ContactPage } from './pages/ContactPage';
-import { PoliciesPage } from './pages/PoliciesPage';
+import { AccessDeniedPage } from './pages/AccessDeniedPage';
 import { AdminPortalPage } from './pages/AdminPortalPage';
+import { AdmissionPage } from './pages/AdmissionPage';
+import { ContactPage } from './pages/ContactPage';
+import { FAQPage } from './pages/FAQPage';
+import { FeesPage } from './pages/FeesPage';
+import { HomePage } from './pages/HomePage';
+import { MentorsPage } from './pages/MentorsPage';
+import { MethodologyPage } from './pages/MethodologyPage';
+import { NotFoundPage } from './pages/NotFoundPage';
+import { PoliciesPage } from './pages/PoliciesPage';
+import { ProgramDetailPage } from './pages/ProgramDetailPage';
+import { ProgramsPage } from './pages/ProgramsPage';
+import { WorkshopPage } from './pages/WorkshopPage';
 
 // Global Modals
+import { PolicyModal } from './components/policies/PolicyModal';
 import { CurriculumModal } from './components/programs/CurriculumModal';
 import { WorkshopModal } from './components/workshop/WorkshopModal';
-import { PolicyModal } from './components/policies/PolicyModal';
 
 export function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -50,9 +52,13 @@ export function App() {
             <Route path="/faq" element={<FAQPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/policies" element={<PoliciesPage />} />
-            <Route path="/admin-portal" element={<AdminPortalPage />} />
-            <Route path="/admin" element={<AdminPortalPage />} />
+            {/* <Route path="/admin-portal" element={<AdminPortalPage />} />
+            <Route path="/admin" element={<AdminPortalPage />} /> */}
             <Route path="/sensei-admin" element={<AdminPortalPage />} />
+            <Route path="/403" element={<AccessDeniedPage />} />
+            <Route path="/access-denied" element={<AccessDeniedPage />} />
+            <Route path="/restricted" element={<AccessDeniedPage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>
 

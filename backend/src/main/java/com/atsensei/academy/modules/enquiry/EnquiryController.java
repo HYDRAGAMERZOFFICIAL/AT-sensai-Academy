@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/enquiries")
@@ -34,9 +33,9 @@ public class EnquiryController {
     @PatchMapping("/{id}/status")
     public ResponseEntity<ApiResponse<EnquiryEntity>> updateStatus(
             @PathVariable Long id,
-            @RequestBody Map<String, String> payload) {
-        String status = payload.get("status");
-        String notes = payload.get("notes");
+            @RequestBody(required = false) EnquiryStatusUpdateDTO dto) {
+        String status = (dto != null) ? dto.getStatus() : null;
+        String notes = (dto != null) ? dto.getNotes() : null;
         return enquiryService.updateEnquiryStatus(id, status, notes)
                 .map(updated -> ResponseEntity.ok(ApiResponse.ok("Enquiry status updated successfully", updated)))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
