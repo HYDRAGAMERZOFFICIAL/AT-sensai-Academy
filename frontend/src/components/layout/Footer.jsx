@@ -76,9 +76,6 @@ export function Footer() {
             <Link to="/policies?tab=disclaimer" style={{ color: 'var(--color-text-inverse-muted)', textDecoration: 'underline' }}>
               Disclaimer
             </Link>
-            <Link to="/admin-portal" style={{ color: 'var(--color-accent-gold)', fontWeight: '600', marginLeft: 'var(--space-2)' }} title="Academy Staff Portal">
-              🔒 Staff Portal
-            </Link>
           </div>
         </div>
       </div>

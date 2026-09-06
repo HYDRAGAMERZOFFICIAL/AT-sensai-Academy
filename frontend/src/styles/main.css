@@ -258,7 +258,7 @@ img, svg {
   padding: 0.35rem 0;
   font-size: 0.82rem;
   position: relative;
-  z-index: 210;
+  z-index: 100;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
@@ -380,7 +380,7 @@ img, svg {
 .site-header {
   position: sticky;
   top: 0;
-  z-index: 200;
+  z-index: 300;
   background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);

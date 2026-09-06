@@ -202,11 +202,6 @@ export function SenseiChatbot() {
     <>
       {/* Floating Launcher Button */}
       <div className="chatbot-launcher-container">
-        {hasUnread && !isOpen && (
-          <div className="chatbot-unread-pill" onClick={() => setIsOpen(true)}>
-            <span>💬 Need guidance? Ask Sensei AI</span>
-          </div>
-        )}
         <button
           type="button"
           className={`chatbot-launcher-btn ${isOpen ? 'active' : ''}`}
