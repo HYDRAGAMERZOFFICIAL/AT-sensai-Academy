@@ -250,19 +250,26 @@ img, svg {
   color: var(--color-accent-gold);
 }
 
-/* ==================== LIVE EXAM NOTIFICATION TICKER ==================== */
+/* ==================== LIVE EXAM NOTIFICATION TICKER (MARQUEE) ==================== */
 .exam-ticker-bar {
-  background: #fff;
-  border-bottom: 1px solid var(--color-border-subtle);
-  padding: 0.45rem 0;
-  font-size: 0.8rem;
+  background: linear-gradient(90deg, var(--color-primary-navy-dark) 0%, var(--color-primary-navy) 50%, var(--color-primary-navy-dark) 100%);
+  color: #fff;
+  border-bottom: 1px solid rgba(212, 160, 23, 0.25);
+  padding: 0.35rem 0;
+  font-size: 0.82rem;
+  position: relative;
+  z-index: 210;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .exam-ticker-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-4);
+  width: 100%;
+  max-width: 100%;
+  padding: 0 1rem;
+  gap: 0.75rem;
   overflow: hidden;
 }
 
@@ -272,28 +279,101 @@ img, svg {
   gap: 6px;
   background: var(--color-sensei-red);
   color: #fff;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 800;
-  padding: 2px 8px;
-  border-radius: var(--radius-xs);
+  padding: 3px 10px;
+  border-radius: 9999px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(227, 38, 54, 0.4);
+  white-space: nowrap;
+}
+
+.ticker-pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+  animation: pulseBadge 1.5s infinite;
+}
+
+@keyframes pulseBadge {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
+
+.ticker-marquee-wrapper {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  mask-image: linear-gradient(to right, transparent 0%, black 2%, black 98%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 2%, black 98%, transparent 100%);
+  white-space: nowrap;
+}
+
+.ticker-marquee-track {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: marqueeContinuous 28s linear infinite;
+}
+
+.ticker-marquee-wrapper:hover .ticker-marquee-track {
+  animation-play-state: paused;
+}
+
+.ticker-marquee-content {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.ticker-segment {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 400;
+}
+
+.ticker-segment strong {
+  color: var(--color-accent-gold);
+  font-weight: 700;
+}
+
+.ticker-dot {
+  margin: 0 1.25rem;
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: bold;
+}
+
+@keyframes marqueeContinuous {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.ticker-action-wrap {
   flex-shrink: 0;
 }
 
-.ticker-track {
-  display: flex;
-  align-items: center;
-  gap: var(--space-6);
+.ticker-reserve-btn {
+  background: var(--color-accent-gold);
+  color: var(--color-primary-navy-dark);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
   white-space: nowrap;
-  overflow: hidden;
-  color: var(--color-text-secondary);
+  transition: all var(--transition-fast);
+  box-shadow: 0 2px 6px rgba(212, 160, 23, 0.3);
 }
 
-.ticker-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+.ticker-reserve-btn:hover {
+  background: #f3b92c;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(212, 160, 23, 0.5);
 }
 
 /* ==================== SITE HEADER ==================== */
